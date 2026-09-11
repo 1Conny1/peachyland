@@ -1,0 +1,1254 @@
+/* ==========================================================
+   CARDPEACHY
+   Baraja zodiacal
+   ----------------------------------------------------------
+   Este archivo contiene TODO el diseño visual.
+
+   No hay imágenes excepto perfil.png.
+   Los signos zodiacales son SVG y están definidos en HTML.
+========================================================== */
+
+
+/* ==========================================================
+   1. COLORES GENERALES
+========================================================== */
+
+:root {
+
+    /*
+       Fondo elegido:
+       vino oscuro / borgoña.
+
+       Las cartas utilizan marfil rosado para que
+       contrasten con él.
+    */
+
+    --background:
+        #250913;
+
+    --background-light:
+        #441326;
+
+
+    /* Carta */
+
+    --card-ivory:
+        #f7e5dd;
+
+    --card-rose:
+        #e7c5bd;
+
+    --card-wine:
+        #641b35;
+
+    --card-wine-dark:
+        #3b0d20;
+
+
+    /* Detalles */
+
+    --gold:
+        #cba06b;
+
+    --gold-light:
+        #e8c999;
+
+    --gold-soft:
+        rgba(203, 160, 107, 0.30);
+
+
+    /* Texto */
+
+    --text-dark:
+        #441425;
+
+    --text-light:
+        #fff5ec;
+
+
+    /* Sombras */
+
+    --shadow:
+        rgba(18, 3, 9, 0.35);
+
+}
+
+
+/* ==========================================================
+   2. RESET
+========================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+
+html,
+body {
+    margin: 0;
+    min-height: 100%;
+}
+
+
+body {
+    background-image: url(background.png);
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+
+
+    min-height: 100vh;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+
+    color:
+        var(--text-light);
+
+}
+
+
+/* ==========================================================
+   3. SVG OCULTO
+
+   Contiene las definiciones de los doce dibujos.
+========================================================== */
+
+.svg-sprite {
+
+    position: absolute;
+
+    width: 0;
+    height: 0;
+
+    overflow: hidden;
+
+}
+
+
+/* ==========================================================
+   4. CONTENIDO GENERAL
+========================================================== */
+
+.page {
+
+    width:
+        min(1400px, 94%);
+
+    margin:
+        0 auto;
+
+    padding:
+        50px 0 80px;
+
+}
+
+
+.page-header {
+
+    text-align:
+        center;
+
+    margin-bottom:
+        55px;
+
+}
+
+
+.page-kicker {
+
+    display:
+        block;
+
+    color:
+        var(--gold);
+
+    font-size:
+        0.8rem;
+
+    letter-spacing:
+        0.28em;
+
+    text-transform:
+        uppercase;
+
+}
+
+
+.page-header h1 {
+
+    margin:
+        12px 0 10px;
+
+    font-size:
+        clamp(
+            2rem,
+            5vw,
+            4rem
+        );
+
+    color:
+        var(--gold-light);
+
+    font-weight:
+        500;
+
+}
+
+
+.page-header p {
+
+    margin:
+        0;
+
+    color:
+        rgba(
+            255,
+            240,
+            225,
+            0.65
+        );
+
+}
+
+
+/* ==========================================================
+   5. SECCIONES
+========================================================== */
+
+.section {
+
+    margin-top:
+        55px;
+
+}
+
+
+.section h2 {
+
+    margin:
+        0 0 25px;
+
+    text-align:
+        center;
+
+    font-size:
+        1rem;
+
+    font-weight:
+        500;
+
+    letter-spacing:
+        0.22em;
+
+    color:
+        var(--gold-light);
+
+    text-transform:
+        uppercase;
+
+}
+
+
+/* ==========================================================
+   6. GRID
+========================================================== */
+
+.card-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(190px, 1fr)
+        );
+
+    gap:
+        36px 28px;
+
+}
+
+
+.single-card-area {
+
+    display:
+        flex;
+
+    justify-content:
+        center;
+
+}
+
+
+/* ==========================================================
+   7. CARTA BASE
+========================================================== */
+
+.card {
+
+    position:
+        relative;
+
+    width:
+        min(100%, 225px);
+
+    aspect-ratio:
+        5 / 8;
+
+    margin:
+        auto;
+
+    overflow:
+        hidden;
+
+    border-radius:
+        20px;
+
+
+    /*
+       Borde oscuro para separarla claramente
+       del fondo.
+    */
+
+    border:
+        5px solid
+        var(--card-wine-dark);
+
+
+    box-shadow:
+
+        0 18px 35px
+        rgba(0, 0, 0, 0.30),
+
+        0 5px 12px
+        rgba(0, 0, 0, 0.20);
+
+}
+
+
+/* ==========================================================
+   8. MARCO INTERIOR
+========================================================== */
+
+.card-border {
+
+    position:
+        absolute;
+
+    inset:
+        9px;
+
+    border-radius:
+        13px;
+
+    border:
+        2px solid
+        rgba(
+            203,
+            160,
+            107,
+            0.80
+        );
+
+    z-index:
+        5;
+
+    pointer-events:
+        none;
+
+}
+
+
+/*
+   Segunda línea ornamental sin agregar
+   otro elemento al HTML.
+*/
+
+.card-border::after {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    inset:
+        5px;
+
+    border-radius:
+        10px;
+
+    border:
+        1px solid
+        rgba(
+            203,
+            160,
+            107,
+            0.26
+        );
+
+}
+
+
+/* ==========================================================
+   9. REVERSO
+========================================================== */
+
+.card-back {
+
+    background:
+
+        radial-gradient(
+            circle at center,
+            rgba(232, 201, 153, 0.10),
+            transparent 42%
+        ),
+
+        linear-gradient(
+            160deg,
+            #5b466f 0%,
+            #403255 55%,
+            #29203b 100%
+        );
+}
+
+
+/*
+   Patrón zodiacal extremadamente sutil.
+
+   Todo se genera con CSS.
+*/
+
+.card-back::before {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+
+    background:
+
+        radial-gradient(
+            circle at 18% 17%,
+            transparent 0 9px,
+            rgba(100, 27, 53, 0.08) 10px 11px,
+            transparent 12px
+        ),
+
+        radial-gradient(
+            circle at 82% 23%,
+            transparent 0 15px,
+            rgba(100, 27, 53, 0.07) 16px 17px,
+            transparent 18px
+        ),
+
+        radial-gradient(
+            circle at 20% 75%,
+            transparent 0 13px,
+            rgba(100, 27, 53, 0.07) 14px 15px,
+            transparent 16px
+        ),
+
+        radial-gradient(
+            circle at 82% 72%,
+            transparent 0 19px,
+            rgba(100, 27, 53, 0.06) 20px 21px,
+            transparent 22px
+        );
+
+}
+
+
+/* ==========================================================
+   10. NOMBRE DEL SIGNO
+========================================================== */
+
+.zodiac-header {
+
+    position:
+        absolute;
+
+    top:
+        26px;
+
+    left:
+        0;
+
+    right:
+        0;
+
+    z-index:
+        3;
+
+
+    text-align:
+        center;
+
+
+    color: var(--gold-light);
+
+
+    font-size:
+        0.72rem;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        0.24em;
+
+}
+
+
+/* ==========================================================
+   11. ZONA DEL SIGNO
+========================================================== */
+
+.zodiac-stage {
+
+    position:
+        absolute;
+
+    /*
+       Dejamos espacio arriba para el nombre
+       y abajo para el retrato.
+    */
+
+    inset:
+        60px 20px 80px;
+
+
+    display:
+        flex;
+
+    justify-content:
+        center;
+
+    align-items:
+        center;
+
+}
+
+
+/* ==========================================================
+   12. ÓRBITA DECORATIVA
+========================================================== */
+
+.orbit {
+
+    position:
+        absolute;
+
+    width:
+        142px;
+
+    height:
+        142px;
+
+    border-radius:
+        50%;
+
+
+    border: 1px solid rgba(232, 201, 153, 0.28);
+
+
+    box-shadow:
+
+        0 0 0 9px
+        rgba(
+            203,
+            160,
+            107,
+            0.06
+        ),
+
+        0 0 0 18px
+        rgba(
+            203,
+            160,
+            107,
+            0.025
+        );
+
+}
+
+
+/*
+   Línea horizontal de la órbita.
+*/
+
+.orbit::before {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    top:
+        50%;
+
+    left:
+        -20px;
+
+    right:
+        -20px;
+
+    height:
+        1px;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--gold-soft),
+            transparent
+        );
+
+}
+
+
+/*
+   Pequeña estrella superior.
+*/
+
+.orbit::after {
+
+    content:
+        "✦";
+
+    position:
+        absolute;
+
+    top:
+        -14px;
+
+    left:
+        50%;
+
+    transform:
+        translateX(-50%);
+
+    color:
+        var(--gold);
+
+    font-size:
+        11px;
+
+}
+
+
+/* ==========================================================
+   13. DIBUJO SVG DEL SIGNO
+========================================================== */
+
+.zodiac-icon {
+
+    position:
+        relative;
+
+    z-index:
+        2;
+
+
+    width:
+        94px;
+
+    height:
+        94px;
+
+
+    /*
+       Los dibujos NO tienen relleno.
+
+       Son líneas vectoriales.
+    */
+
+    fill:
+        none;
+
+    stroke:
+        var(--gold-light);
+
+    stroke-width:
+        5.5;
+
+    stroke-linecap:
+        round;
+
+    stroke-linejoin:
+        round;
+
+
+    /*
+       Muy pequeño brillo dorado.
+    */
+
+    filter:
+        drop-shadow(
+            0 2px 0
+            rgba(
+                203,
+                160,
+                107,
+                0.20
+            )
+        );
+
+}
+
+
+/* ==========================================================
+   14. FOTO DE PERFIL
+========================================================== */
+
+.profile {
+
+    position:
+        absolute;
+
+    left:
+        50%;
+
+    transform:
+        translateX(-50%);
+
+    z-index:
+        8;
+
+}
+
+
+/*
+   La imagen es lo único de la carta
+   que NO generamos mediante código.
+*/
+
+.profile img {
+
+    width:
+        55px;
+
+    height:
+        55px;
+
+    display:
+        block;
+
+    object-fit:
+        cover;
+
+    border-radius:
+        50%;
+
+
+    /*
+       Un solo marco principal.
+
+       Evitamos el doble círculo grueso
+       que no te había gustado anteriormente.
+    */
+
+    border:
+        3px solid
+        var(--card-wine-dark);
+
+
+    box-shadow:
+
+        0 0 0 2px
+        var(--gold),
+
+        0 7px 15px
+        rgba(41, 9, 21, 0.25);
+
+}
+
+
+/* Foto en la parte inferior del reverso */
+
+.profile-bottom {
+
+    bottom:
+        18px;
+
+}
+
+
+/* Foto en la parte superior del frente */
+
+.profile-top {
+
+    top:
+        21px;
+
+}
+
+
+/*
+   Pequeño ornamento bajo la foto
+   de los reversos.
+*/
+
+.profile-bottom::before,
+.profile-bottom::after {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    top:
+        50%;
+
+    width:
+        38px;
+
+    height:
+        1px;
+
+    background:
+        var(--gold);
+
+}
+
+
+.profile-bottom::before {
+
+    right:
+        calc(100% + 7px);
+
+}
+
+
+.profile-bottom::after {
+
+    left:
+        calc(100% + 7px);
+
+}
+
+
+/* ==========================================================
+   15. FRONTAL
+========================================================== */
+
+.card-front {
+
+    /*
+       Azul ciruela / violeta nocturno.
+
+       Contrasta con la mesa borgoña,
+       pero sigue dentro de la estética
+       tarot / astrología.
+    */
+
+    background:
+
+        radial-gradient(
+            circle at 50% 30%,
+            rgba(232, 201, 153, 0.16),
+            transparent 40%
+        ),
+
+        linear-gradient(
+            170deg,
+            #4b3b62 0%,
+            #352a4d 52%,
+            #211a32 100%
+        );
+}
+
+
+/* ==========================================================
+   16. DECORACIÓN LUNAR SUPERIOR
+========================================================== */
+
+.celestial-top {
+
+    position:
+        absolute;
+
+    top:
+        45px;
+
+    left:
+        50%;
+
+    transform:
+        translateX(-50%);
+
+
+    display:
+        flex;
+
+    gap:
+        48px;
+
+    align-items:
+        center;
+
+    z-index:
+        2;
+
+}
+
+
+/*
+   Tres pequeños puntos decorativos.
+*/
+
+.celestial-top span {
+
+    display:
+        block;
+
+    width:
+        5px;
+
+    height:
+        5px;
+
+    border-radius:
+        50%;
+
+    background:
+        var(--gold);
+
+}
+
+
+.celestial-top span:nth-child(2) {
+
+    width:
+        8px;
+
+    height:
+        8px;
+
+}
+
+
+/* ==========================================================
+   17. MARCA FRONTAL
+========================================================== */
+
+.front-brand {
+
+    position:
+        absolute;
+
+    top:
+        94px;
+
+    left:
+        0;
+
+    right:
+        0;
+
+
+    text-align:
+        center;
+
+
+    color:
+        var(--gold-light);
+
+    font-size:
+        0.68rem;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        0.24em;
+
+}
+
+
+/* ==========================================================
+   18. PANEL DEL TEXTO
+========================================================== */
+
+.action-panel {
+
+    position:
+        absolute;
+
+    /*
+       Dejamos bastante espacio vertical porque sabemos
+       que algunas acciones serán largas.
+    */
+
+    top:
+        124px;
+
+    left:
+        21px;
+
+    right:
+        21px;
+
+    bottom:
+        48px;
+
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+
+    padding:
+        22px 17px;
+
+
+    border-radius:
+        15px;
+
+
+    /*
+       Interior marfil para maximizar legibilidad.
+    */
+
+    background:
+
+        linear-gradient(
+            170deg,
+            #fff4ed,
+            #f3ded6
+        );
+
+
+    border:
+        1px solid
+        rgba(
+            203,
+            160,
+            107,
+            0.78
+        );
+
+
+    box-shadow:
+
+        inset 0 0 0 3px
+        rgba(
+            100,
+            27,
+            53,
+            0.05
+        );
+
+}
+
+
+/* ==========================================================
+   19. TEXTO DE LA ACCIÓN
+========================================================== */
+
+.action-text {
+
+    margin:
+        0;
+
+
+    max-width:
+        100%;
+
+
+    color:
+        var(--text-dark);
+
+
+    text-align:
+        center;
+
+
+    /*
+       A propósito NO es enorme.
+
+       Ya sabemos que las acciones pueden
+       contener bastante texto.
+    */
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+
+    font-size:
+        1rem;
+
+    font-weight:
+        700;
+
+    line-height:
+        1.35;
+
+
+    /*
+       No se permite partir arbitrariamente
+       una palabra por la mitad.
+    */
+
+    word-break:
+        normal;
+
+    overflow-wrap:
+        normal;
+
+    hyphens:
+        none;
+
+}
+
+
+/* ==========================================================
+   20. PIE FRONTAL
+========================================================== */
+
+.front-footer {
+
+    position:
+        absolute;
+
+    bottom:
+        19px;
+
+    left:
+        0;
+
+    right:
+        0;
+
+
+    display:
+        flex;
+
+    justify-content:
+        center;
+
+    align-items:
+        center;
+
+    gap:
+        8px;
+
+
+    color:
+        var(--gold-light);
+
+
+    font-size:
+        0.57rem;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        0.18em;
+
+}
+
+
+.footer-star {
+
+    font-size:
+        7px;
+
+}
+
+
+/* ==========================================================
+   21. EFECTO HOVER SOLO PARA LA DEMO
+
+   Esto luego se puede retirar cuando integremos
+   las cartas con la animación real.
+========================================================== */
+
+.card {
+
+    transition:
+
+        transform
+        180ms ease,
+
+        box-shadow
+        180ms ease;
+
+}
+
+
+.card:hover {
+
+    transform:
+        translateY(-5px);
+
+
+    box-shadow:
+
+        0 25px 44px
+        rgba(0,0,0,.34),
+
+        0 8px 15px
+        rgba(0,0,0,.20);
+
+}
+
+
+/* ==========================================================
+   22. RESPONSIVE
+========================================================== */
+
+@media (max-width: 600px) {
+
+    .page {
+        width: 92%;
+        padding-top: 30px;
+    }
+
+    .card-grid {
+        grid-template-columns:
+            repeat(
+                auto-fit,
+                minmax(155px, 1fr)
+            );
+
+        gap: 24px 16px;
+    }
+
+    .card {
+        max-width: 200px;
+    }
+
+    .zodiac-icon {
+        width: 80px;
+        height: 80px;
+    }
+
+    .orbit {
+        width: 125px;
+        height: 125px;
+    }
+}

@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>CardPeachy · Baraja Zodiacal</title>
+
+    <link
+        rel="stylesheet"
+        href="cards.css"
+    >
+</head>
+
+<body>
+
+    <!-- ==========================================================
+         SPRITE SVG
+
+         Aquí están dibujados los 12 símbolos zodiacales.
+
+         IMPORTANTE:
+         - No son emojis.
+         - No son imágenes.
+         - No dependen de ninguna fuente.
+         - Son trazos SVG vectoriales creados en código.
+         - Podemos reutilizarlos después dentro de Tauri.
+    =========================================================== -->
+
+    <svg
+        class="svg-sprite"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+
+        <!-- ======================
+             ARIES
+        ======================= -->
+
+        <symbol
+            id="zodiac-aries"
+            viewBox="0 0 100 100"
+        >
+            <path
+                d="
+                    M50 82
+                    V37
+
+                    C50 19 39 12 29 12
+                    C18 12 12 20 12 30
+                    C12 41 20 48 29 48
+                    C41 48 50 37 50 26
+
+                    C50 37 59 48 71 48
+                    C80 48 88 41 88 30
+                    C88 20 82 12 71 12
+                    C61 12 50 19 50 37
+                "
+            />
+        </symbol>
+
+
+        <!-- ======================
+             TAURO
+        ======================= -->
+
+        <symbol
+            id="zodiac-taurus"
+            viewBox="0 0 100 100"
+        >
+            <path
+                d="
+                    M23 14
+                    C25 31 34 36 50 36
+
+                    C66 36 75 31 77 14
+
+                    M50 36
+                    C31 36 21 48 21 64
+                    C21 80 33 89 50 89
+                    C67 89 79 80 79 64
+                    C79 48 69 36 50 36
+                "
+            />
+        </symbol>
+
+
+        <!-- ======================
+             GÉMINIS
+        ======================= -->
+
+        <symbol
+            id="zodiac-gemini"
+            viewBox="0 0 100 100"
+        >
+            <path
+                d="
+                    M25 17
+                    C40 23 60 23 75 17
+
+                    M25 83
+                    C40 77 60 77 75 83
+
+                    M34 21
+                    V79
+
+                    M66 21
+                    V79
+                "
+            />
+        </symbol>
+
+
+        <!-- ======================
+             CÁNCER
+        ======================= -->
+
+        <symbol
+            id="zodiac-cancer"
+            viewBox="0 0 100 100"
+        >
+            <path
+                d="
+                    M79 31
+                    C65 17 41 16 25 26
+                    C16 32 12 39 12 47
+
+                    M21 69
+                    C35 83 59 84 75 74
+                    C84 68 88 61 88 53
+                "
+            />
+
+            <circle
+                cx="30"
+                cy="42"
+                r="10"
+            />
+
+            <circle
+                cx="70"
+                cy="58"
+                r="10"
+            />
+        </symbol>
+
+
+        <!-- ======================
+             LEO
+        ======================= -->
+
+        <symbol
+            id="zodiac-leo"
+            viewBox="0 0 100 100"
+        >
+            <circle
+                cx="31"
+                cy="63"
+                r="14"
+            />
+
+            <path
+                d="
+                    M43 58
+
+                    C50 51 49 35 54 24
+                    C59 12 73 11 80 20
+                    C87 29 83 42 74 47
+
+                    C65 52 59 51 58 61
+                    C57 72 66 81 78 78
+                    C84 77 88 73 90 69
+                "
+            />
+        </symbol>
+
+
+        <!-- ======================
+             VIRGO
+        ======================= -->
+
+        <symbol
+            id="zodiac-virgo"
+            viewBox="0 0 100 100"
+        >
+            <path
+                d="
+                    M17 78
+                    V28
+
+                    C17 19 27 19 30 29
+                    V78
+
+                    M30 29
+                    C33 19 43 19 46 29
+                    V78
+
+                    M46 29
+                    C50 18 61 20 63 31
+                    V62
+
+                    C63 76 70 83 81 83
+
+                    M63 54
+                    C72 55 81 49 84 39
+
+                    M84 39
+                    C88 55 84 71 74 80
+                "
+            />
+        </symbol>
+
+
+        <!-- ======================
+             LIBRA
+        ======================= -->
+
+        <symbol
+            id="zodiac-libra"
+            viewBox="0 0 100 100"
+        >
+            <path
+                d="
+                    M14 71
+                    H86
+
+                    M14 84
+                    H86
+
+                    M28 71
+                    C28 61 35 54 44 53
+
+                    C35 50 31 44 31 37
+                    C31 26 39 18 50 18
+                    C61 18 69 26 69 37
+                    C69 44 65 50 56 53
+
+                    C65 54 72 61 72 71
+                "
+            />
+        </symbol>
+
+
+        <!-- ======================
+             ESCORPIO
+        ======================= -->
+
+        <symbol
+            id="zodiac-scorpio"
+            viewBox="0 0 100 100"
+        >
+            <path
+                d="
+                    M15 78
+                    V29
+
+                    C15 19 25 19 28 29
+                    V78
+
+                    M28 29
+                    C31 19 41 19 44 29
+                    V78
+
+                    M44 29
+                    C47 19 57 19 60 29
+                    V67
+
+                    C60 77 67 82 76 82
+
+                    H87
+
+                    M78 73
+                    L88 82
+                    L78 91
+                "
+            />
+        </symbol>
+
+
+        <!-- ======================
+             SAGITARIO
+        ======================= -->
+
+        <symbol
+            id="zodiac-sagittarius"
+            viewBox="0 0 100 100"
+        >
+            <path
+                d="
+                    M20 80
+                    L78 22
+
+                    M54 22
+                    H78
+                    V46
+
+                    M35 48
+                    L65 78
+                "
+            />
+        </symbol>
+
+
+        <!-- ======================
+             CAPRICORNIO
+        ======================= -->
+
+        <symbol
+            id="zodiac-capricorn"
+            viewBox="0 0 100 100"
+        >
+            <path
+                d="
+                    M13 32
+                    C18 20 29 20 34 32
+
+                    L46 70
+
+                    M34 32
+                    C39 20 51 20 55 32
+
+                    L65 65
+
+                    C68 75 72 82 81 82
+                    C89 82 93 76 93 69
+                    C93 61 87 56 80 56
+                    C70 56 64 64 64 73
+
+                    C64 83 56 89 47 89
+                "
+            />
+        </symbol>
+
+
+        <!-- ======================
+             ACUARIO
+        ======================= -->
+
+        <symbol
+            id="zodiac-aquarius"
+            viewBox="0 0 100 100"
+        >
+            <path
+                d="
+                    M12 36
+                    L25 27
+                    L37 36
+                    L50 27
+                    L63 36
+                    L75 27
+                    L88 36
+
+                    M12 64
+                    L25 55
+                    L37 64
+                    L50 55
+                    L63 64
+                    L75 55
+                    L88 64
+                "
+            />
+        </symbol>
+
+
+        <!-- ======================
+             PISCIS
+        ======================= -->
+
+        <symbol
+            id="zodiac-pisces"
+            viewBox="0 0 100 100"
+        >
+            <path
+                d="
+                    M30 15
+                    C47 27 47 73 30 85
+
+                    M70 15
+                    C53 27 53 73 70 85
+
+                    M18 50
+                    H82
+                "
+            />
+        </symbol>
+
+    </svg>
+
+
+
+    <!-- ==========================================================
+         CONTENIDO DE LA DEMO
+    =========================================================== -->
+
+    <main class="page">
+
+
+        <header class="page-header">
+
+            <span class="page-kicker">
+                CardPeachy
+            </span>
+
+            <h1>
+                Baraja zodiacal
+            </h1>
+
+            <p>
+                Diseño de prueba para los doce reversos y
+                una carta frontal.
+            </p>
+
+        </header>
+
+
+
+        <!-- ======================================================
+             CARTA FRONTAL
+        ======================================================= -->
+
+        <section class="section">
+
+            <h2>
+                Frontal
+            </h2>
+
+
+            <div class="single-card-area">
+
+
+                <article class="card card-front">
+
+
+                    <!-- Borde interno -->
+
+                    <div class="card-border"></div>
+
+
+                    <!-- Elementos decorativos superiores -->
+
+                    <div class="celestial-top">
+
+                        <span></span>
+                        <span></span>
+                        <span></span>
+
+                    </div>
+
+
+                    <!--
+                        FOTO DE PERFIL
+
+                        En la frontal queda ARRIBA,
+                        como pediste.
+                    -->
+
+                    <div class="profile profile-top">
+
+                        <img
+                            src="perfil.png"
+                            alt="Foto de perfil"
+                        >
+
+                    </div>
+
+
+                    <!-- Zona de marca -->
+
+                    <div class="front-brand">
+                        PEACHY
+                    </div>
+
+
+                    <!--
+                        CONTENIDO PRINCIPAL
+
+                        Está pensado para admitir
+                        acciones relativamente largas.
+                    -->
+
+                    <div class="action-panel">
+
+                        <p class="action-text">
+                            50/50 Muestras o muestro mis likes
+                        </p>
+
+                    </div>
+
+
+                    <div class="front-footer">
+
+                        <span class="footer-star">
+                            ✦
+                        </span>
+
+                        <span>
+                            ACTION CARD
+                        </span>
+
+                        <span class="footer-star">
+                            ✦
+                        </span>
+
+                    </div>
+
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ======================================================
+             12 REVERSOS
+        ======================================================= -->
+
+        <section class="section">
+
+            <h2>
+                Reversos zodiacales
+            </h2>
+
+
+            <div class="card-grid">
+
+
+                <!-- ==========================
+                     ARIES
+                =========================== -->
+
+                <article class="card card-back">
+
+                    <div class="card-border"></div>
+
+                    <div class="zodiac-header">
+                        ARIES
+                    </div>
+
+                    <div class="zodiac-stage">
+
+                        <div class="orbit"></div>
+
+                        <svg
+                            class="zodiac-icon"
+                            viewBox="0 0 100 100"
+                            aria-label="Símbolo de Aries"
+                        >
+                            <use href="#zodiac-aries"></use>
+                        </svg>
+
+                    </div>
+
+                    <div class="profile profile-bottom">
+                        <img src="perfil.png" alt="Foto de perfil">
+                    </div>
+
+                </article>
+
+
+
+                <!-- ==========================
+                     TAURO
+                =========================== -->
+
+                <article class="card card-back">
+
+                    <div class="card-border"></div>
+
+                    <div class="zodiac-header">
+                        TAURO
+                    </div>
+
+                    <div class="zodiac-stage">
+
+                        <div class="orbit"></div>
+
+                        <svg
+                            class="zodiac-icon"
+                            viewBox="0 0 100 100"
+                            aria-label="Símbolo de Tauro"
+                        >
+                            <use href="#zodiac-taurus"></use>
+                        </svg>
+
+                    </div>
+
+                    <div class="profile profile-bottom">
+                        <img src="perfil.png" alt="Foto de perfil">
+                    </div>
+
+                </article>
+
+
+
+                <!-- ==========================
+                     GÉMINIS
+                =========================== -->
+
+                <article class="card card-back">
+
+                    <div class="card-border"></div>
+
+                    <div class="zodiac-header">
+                        GÉMINIS
+                    </div>
+
+                    <div class="zodiac-stage">
+
+                        <div class="orbit"></div>
+
+                        <svg
+                            class="zodiac-icon"
+                            viewBox="0 0 100 100"
+                            aria-label="Símbolo de Géminis"
+                        >
+                            <use href="#zodiac-gemini"></use>
+                        </svg>
+
+                    </div>
+
+                    <div class="profile profile-bottom">
+                        <img src="perfil.png" alt="Foto de perfil">
+                    </div>
+
+                </article>
+
+
+
+                <!-- ==========================
+                     CÁNCER
+                =========================== -->
+
+                <article class="card card-back">
+
+                    <div class="card-border"></div>
+
+                    <div class="zodiac-header">
+                        CÁNCER
+                    </div>
+
+                    <div class="zodiac-stage">
+
+                        <div class="orbit"></div>
+
+                        <svg
+                            class="zodiac-icon"
+                            viewBox="0 0 100 100"
+                            aria-label="Símbolo de Cáncer"
+                        >
+                            <use href="#zodiac-cancer"></use>
+                        </svg>
+
+                    </div>
+
+                    <div class="profile profile-bottom">
+                        <img src="perfil.png" alt="Foto de perfil">
+                    </div>
+
+                </article>
+
+
+
+                <!-- ==========================
+                     LEO
+                =========================== -->
+
+                <article class="card card-back">
+
+                    <div class="card-border"></div>
+
+                    <div class="zodiac-header">
+                        LEO
+                    </div>
+
+                    <div class="zodiac-stage">
+
+                        <div class="orbit"></div>
+
+                        <svg
+                            class="zodiac-icon"
+                            viewBox="0 0 100 100"
+                            aria-label="Símbolo de Leo"
+                        >
+                            <use href="#zodiac-leo"></use>
+                        </svg>
+
+                    </div>
+
+                    <div class="profile profile-bottom">
+                        <img src="perfil.png" alt="Foto de perfil">
+                    </div>
+
+                </article>
+
+
+
+                <!-- ==========================
+                     VIRGO
+                =========================== -->
+
+                <article class="card card-back">
+
+                    <div class="card-border"></div>
+
+                    <div class="zodiac-header">
+                        VIRGO
+                    </div>
+
+                    <div class="zodiac-stage">
+
+                        <div class="orbit"></div>
+
+                        <svg
+                            class="zodiac-icon"
+                            viewBox="0 0 100 100"
+                            aria-label="Símbolo de Virgo"
+                        >
+                            <use href="#zodiac-virgo"></use>
+                        </svg>
+
+                    </div>
+
+                    <div class="profile profile-bottom">
+                        <img src="perfil.png" alt="Foto de perfil">
+                    </div>
+
+                </article>
+
+
+
+                <!-- ==========================
+                     LIBRA
+                =========================== -->
+
+                <article class="card card-back">
+
+                    <div class="card-border"></div>
+
+                    <div class="zodiac-header">
+                        LIBRA
+                    </div>
+
+                    <div class="zodiac-stage">
+
+                        <div class="orbit"></div>
+
+                        <svg
+                            class="zodiac-icon"
+                            viewBox="0 0 100 100"
+                            aria-label="Símbolo de Libra"
+                        >
+                            <use href="#zodiac-libra"></use>
+                        </svg>
+
+                    </div>
+
+                    <div class="profile profile-bottom">
+                        <img src="perfil.png" alt="Foto de perfil">
+                    </div>
+
+                </article>
+
+
+
+                <!-- ==========================
+                     ESCORPIO
+                =========================== -->
+
+                <article class="card card-back">
+
+                    <div class="card-border"></div>
+
+                    <div class="zodiac-header">
+                        ESCORPIO
+                    </div>
+
+                    <div class="zodiac-stage">
+
+                        <div class="orbit"></div>
+
+                        <svg
+                            class="zodiac-icon"
+                            viewBox="0 0 100 100"
+                            aria-label="Símbolo de Escorpio"
+                        >
+                            <use href="#zodiac-scorpio"></use>
+                        </svg>
+
+                    </div>
+
+                    <div class="profile profile-bottom">
+                        <img src="perfil.png" alt="Foto de perfil">
+                    </div>
+
+                </article>
+
+
+
+                <!-- ==========================
+                     SAGITARIO
+                =========================== -->
+
+                <article class="card card-back">
+
+                    <div class="card-border"></div>
+
+                    <div class="zodiac-header">
+                        SAGITARIO
+                    </div>
+
+                    <div class="zodiac-stage">
+
+                        <div class="orbit"></div>
+
+                        <svg
+                            class="zodiac-icon"
+                            viewBox="0 0 100 100"
+                            aria-label="Símbolo de Sagitario"
+                        >
+                            <use href="#zodiac-sagittarius"></use>
+                        </svg>
+
+                    </div>
+
+                    <div class="profile profile-bottom">
+                        <img src="perfil.png" alt="Foto de perfil">
+                    </div>
+
+                </article>
+
+
+
+                <!-- ==========================
+                     CAPRICORNIO
+                =========================== -->
+
+                <article class="card card-back">
+
+                    <div class="card-border"></div>
+
+                    <div class="zodiac-header">
+                        CAPRICORNIO
+                    </div>
+
+                    <div class="zodiac-stage">
+
+                        <div class="orbit"></div>
+
+                        <svg
+                            class="zodiac-icon"
+                            viewBox="0 0 100 100"
+                            aria-label="Símbolo de Capricornio"
+                        >
+                            <use href="#zodiac-capricorn"></use>
+                        </svg>
+
+                    </div>
+
+                    <div class="profile profile-bottom">
+                        <img src="perfil.png" alt="Foto de perfil">
+                    </div>
+
+                </article>
+
+
+
+                <!-- ==========================
+                     ACUARIO
+                =========================== -->
+
+                <article class="card card-back">
+
+                    <div class="card-border"></div>
+
+                    <div class="zodiac-header">
+                        ACUARIO
+                    </div>
+
+                    <div class="zodiac-stage">
+
+                        <div class="orbit"></div>
+
+                        <svg
+                            class="zodiac-icon"
+                            viewBox="0 0 100 100"
+                            aria-label="Símbolo de Acuario"
+                        >
+                            <use href="#zodiac-aquarius"></use>
+                        </svg>
+
+                    </div>
+
+                    <div class="profile profile-bottom">
+                        <img src="perfil.png" alt="Foto de perfil">
+                    </div>
+
+                </article>
+
+
+
+                <!-- ==========================
+                     PISCIS
+                =========================== -->
+
+                <article class="card card-back">
+
+                    <div class="card-border"></div>
+
+                    <div class="zodiac-header">
+                        PISCIS
+                    </div>
+
+                    <div class="zodiac-stage">
+
+                        <div class="orbit"></div>
+
+                        <svg
+                            class="zodiac-icon"
+                            viewBox="0 0 100 100"
+                            aria-label="Símbolo de Piscis"
+                        >
+                            <use href="#zodiac-pisces"></use>
+                        </svg>
+
+                    </div>
+
+                    <div class="profile profile-bottom">
+                        <img src="perfil.png" alt="Foto de perfil">
+                    </div>
+
+                </article>
+
+
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+</html>
