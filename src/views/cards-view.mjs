@@ -15,7 +15,9 @@ export async function mountCards(container, { actionsProvider }) {
     </header>
     <section aria-labelledby="gallery-front-title">
       <header class="gallery-section-heading">
-        <div><p class="gallery-eyebrow">01 · EL FRENTE</p><h2 id="gallery-front-title">Las acciones</h2></div>
+        <div>
+          <h2 id="gallery-front-title">Las acciones</h2>
+        </div>
         <span class="gallery-count" data-action-count></span>
       </header>
       <p class="gallery-description">Las posibilidades que esperan sobre la mesa.</p>
@@ -23,7 +25,9 @@ export async function mountCards(container, { actionsProvider }) {
     </section>
     <section aria-labelledby="gallery-back-title">
       <header class="gallery-section-heading">
-        <div><p class="gallery-eyebrow">02 · EL REVERSO</p><h2 id="gallery-back-title">El zodiaco</h2></div>
+        <div>
+          <h2 id="gallery-back-title">El zodiaco</h2>
+        </div>
         <span class="gallery-count">12 signos</span>
       </header>
       <p class="gallery-description">Doce identidades que dan vida a nuestra baraja.</p>

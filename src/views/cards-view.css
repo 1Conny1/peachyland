@@ -13,8 +13,7 @@ body[data-route='cartas'] main {
   color: #f7e5dd;
   background-color: #291321;
   background:
-    url('../assets/gallery-sky.svg') center top / 100% auto repeat-y,
-    radial-gradient(ellipse 900px 650px at 70% 0%, #61426538, transparent 80%),
+    url('../assets/gallery-sky.svg') center top / 100% 100% no-repeat,
     linear-gradient(125deg, #291321, #1d1324 55%, #2b1525);
 }
 

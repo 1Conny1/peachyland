@@ -396,3 +396,65 @@ sirviera CSS corrupto distinto del archivo guardado. No se restauran las propues
 descartadas de paneles, tipografías anteriores ni halos intensos. La ruleta, la barra
 lateral, los datos y los cuatro originales permanecen intactos.
 Lora fue aceptada para continuar; el fondo conserva el último diseño implementado.
+
+## Constelaciones refinadas y resplandor ocasional
+
+El usuario autorizó mejorar las figuras del fondo y añadir resplandor. Se modifica
+únicamente gallery-sky.svg: mayor definición de líneas doradas, uniones suaves y
+estrellas de cuatro puntas con aros finos en los puntos principales. Los trazos y
+estrellas aumentan suavemente su luminosidad en ciclos de 13 s; los halos laterales
+se alternan con un desfase de 6,5 s. El brillo permanece en el dibujo de fondo.
+Movimiento reducido mantiene las figuras estáticas y sin halos animados.
+Estado: implementado para revisión visual.
+
+## Fondo estático con doce constelaciones
+
+El usuario pidió reducir la saturación y representar los doce signos mediante sus
+constelaciones. Se sustituye gallery-sky.svg por doce figuras decorativas
+simplificadas, seis por lateral, con estrellas pequeñas y conexiones doradas tenues.
+No es un mapa astronómico a escala. Se eliminan arcos, aros, halos, animaciones
+y luz radial adicional. El fondo se dibuja una sola vez y conserva las proporciones
+del SVG al adaptarse al área disponible. Las cartas y los textos quedan intactos.
+Estado: implementado para revisión visual.
+
+### Aclaración — Cielo estrellado con conexiones temporales
+
+El usuario precisó que desea estrellas permanentes y constelaciones que se formen
+ocasionalmente entre ellas. Se añaden 240 estrellas discretas al fondo y se conservan
+los puntos de las doce figuras. Sus líneas se trazan progresivamente, permanecen
+brevemente y desaparecen; las estrellas nunca se retiran. Cada figura tiene un
+ciclo de 48 s, desfasado 4 s respecto a la siguiente, evitando mostrarlas todas
+a la vez. Movimiento reducido deja solo el cielo estrellado estático.
+Estado: implementado para revisión visual; modificación exclusiva del fondo SVG.
+
+## Galería — encabezados sin numeración
+
+Se retiran «01 · EL FRENTE» y «02 · EL REVERSO». Los encabezados de ambas
+secciones conservan sus títulos, identificadores accesibles y contadores;
+el marcado de «El zodiaco» queda explícito y limpio. No se modifican las cartas,
+el fondo ni la ruleta.
+
+### Corrección comprobada en navegador
+
+Se recupera el contenedor original de cada título y se mantienen retirados solo
+los rótulos numerados. Se comprobó que la vista previa del puerto 57391 servía
+HTML malformado distinto del archivo guardado: faltaban partes de las etiquetas
+de ambos títulos y del contador del zodiaco. Recargar esa vista no lo corregía.
+Se abrió una vista local que lee directamente del disco en el puerto 8080.
+El navegador externo del usuario seguía apuntando a 57391, que aún entrega
+la plantilla malformada. Para revisar la versión guardada, abrir
+http://127.0.0.1:8080/index.html#/cartas en ese navegador; el 8080 entregó
+exactamente el contenido de cards-view.mjs en disco al comprobarlo.
+Verificación visual: ambos títulos y contadores correctos, sin numeración ni HTML
+visible; 10 acciones y 12 reversos cargados. No se alteran los estilos.
+
+### Causa identificada del desfase con Zed LiveServer
+
+El proceso del puerto 57391 es la extensión LiveServer de Zed. La comparación
+HTTP confirmó que entrega `cards-view.mjs` malformado mientras CSS y bitácora
+coinciden con el disco. Su implementación, en modo predeterminado, prioriza
+una copia en memoria de cada archivo abierto sobre el archivo guardado; al
+cerrarlo elimina esa copia. El servidor del puerto 8080 lee el disco y entrega
+el módulo correcto. Para recuperar el flujo habitual en Zed, revisar primero
+si hay cambios propios sin guardar en `cards-view.mjs`, cerrar ese archivo en
+Zed sin sobrescribir la versión buena del disco, reabrirlo y recargar 57391.
