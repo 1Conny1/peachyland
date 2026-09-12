@@ -497,3 +497,16 @@ creada. Se restablecieron los datos iniciales tras las pruebas. Diez pruebas
 de proveedor y sorteo aprobadas, incluyendo eliminación por ID de textos iguales,
 ID inexistente, vaciado completo e independencia del documento inicial.
 Altas y bajas siguen siendo temporales hasta conectar almacenamiento local.
+
+## Fondo de Cartas con una colección creciente
+
+Al crecer la galería, el SVG del cielo se estiraba a `100% 100%` de la altura
+total: las estrellas y las constelaciones cambiaban de proporción. Además,
+el color claro del `body` podía asomarse como una franja inferior. La galería
+ahora usa el ancho disponible y la altura proporcional del SVG, repitiéndolo
+verticalmente según haga falta; el fondo del `body` de esta ruta usa el mismo
+tono oscuro. Las cartas y la ruleta no se modifican.
+
+Se reprodujo en navegador a 1919 × 995 con 13 acciones y los 12 reversos:
+la altura del escenario cubrió la página, el cielo mantuvo `100% auto` y el
+borde inferior quedó oscuro. Se recargó para retirar las acciones de prueba.

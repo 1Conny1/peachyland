@@ -7,13 +7,17 @@
   font-display: swap;
 }
 
+body[data-route='cartas'] {
+  background: #291321;
+}
+
 body[data-route='cartas'] main {
   min-height: 100dvh;
   padding: clamp(24px, 3.5vw, 64px);
   color: #f7e5dd;
   background-color: #291321;
   background:
-    url('../assets/gallery-sky.svg') center top / 100% 100% no-repeat,
+    url('../assets/gallery-sky.svg') center top / 100% auto repeat-y,
     linear-gradient(125deg, #291321, #1d1324 55%, #2b1525);
 }
 
