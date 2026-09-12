@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Peachyland · Prueba del módulo de cartas</title>
+  <link rel="stylesheet" href="./cards-demo.css">
+</head>
+<body>
+  <main>
+    <h1>Baraja zodiacal</h1>
+    <p>Prueba independiente del módulo. Cada carta se crea desde el catálogo visual.</p>
+    <section aria-labelledby="preview-title">
+      <h2 id="preview-title">Frontal bajo demanda</h2>
+      <div class="controls">
+        <label>Acción <textarea id="action">50/50 Muestras o muestro mis likes</textarea></label>
+        <button id="front" disabled>Mostrar acción</button>
+        <button id="back" disabled>Mostrar reverso</button>
+      </div>
+      <p id="status" role="status">Cargando estilos…</p>
+      <div id="preview"></div>
+    </section>
+    <section><h2>Los doce reversos</h2><div id="gallery" class="gallery"></div></section>
+    <section><h2>Escala para la mesa · 82 px</h2><div id="compact" class="compact"></div></section>
+  </main>
+  <script type="module" src="./cards-demo.mjs"></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+* { box-sizing: border-box; }
+body { margin: 0; color: #29232e; background: #f4f1f5; font: 16px/1.5 Arial, sans-serif; }
+.sidebar { position: fixed; inset: 0 auto 0 0; width: 190px; padding: 24px 16px; background: #302637; color: white; overflow-y: auto; }
+.brand { font-weight: bold; margin: 0 0 32px; }
+nav { display: grid; gap: 8px; }
+nav a { padding: 12px; border-radius: 6px; color: #eae1ef; text-decoration: none; }
+nav a:hover, nav a[aria-current="page"] { background: #54425f; color: white; }
+a:focus-visible { outline: 2px solid #e8c999; outline-offset: 3px; }
+main { margin-left: 190px; padding: 32px; }
+h1 { margin-top: 0; }
+section { margin-top: 36px; }
+.cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(245px, 1fr)); gap: 24px; }
+figure { margin: 0; display: grid; justify-items: center; align-content: start; gap: 16px; padding: 20px 10px; border: 1px solid #d6cddd; border-radius: 10px; background: #eee7f0; }
+figcaption { text-align: center; overflow-wrap: anywhere; }
+.table-placeholder { min-height: 480px; display: grid; place-items: center; border-radius: 10px; background: #250913 url('../../background.png') center / cover; color: white; padding: 24px; }
+.table-placeholder p { padding: 16px; background: #250913dd; border-radius: 6px; }
+@media (max-width: 650px) { .sidebar { width: 125px; padding: 20px 8px; } main { margin-left: 125px; padding: 20px 12px; } .cards-grid { grid-template-columns: 1fr; } }

@@ -1,0 +1,13 @@
+body { margin: 0; background: #250913 url('../background.png') center / cover fixed; color: #fff5ec; font-family: Georgia, serif; }
+main { max-width: 1300px; margin: auto; padding: 40px 24px 80px; }
+h1, h2 { color: #e8c999; font-weight: normal; }
+section { margin-top: 48px; }
+.gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(225px, 1fr)); gap: 32px; }
+.compact { display: flex; flex-wrap: wrap; gap: 24px; }
+.controls { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; }
+label { display: grid; gap: 8px; width: min(100%, 430px); }
+textarea, button { font: 16px Arial, sans-serif; border: 1px solid #cba06b; border-radius: 8px; padding: 12px; }
+textarea { min-height: 70px; resize: vertical; }
+button { background: #403255; color: #fff5ec; cursor: pointer; }
+button:disabled { opacity: .5; }
+#status { min-height: 1.5em; }
