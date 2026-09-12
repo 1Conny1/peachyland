@@ -1,10 +1,126 @@
 * { box-sizing: border-box; }
 body { margin: 0; color: #29232e; background: #f4f1f5; font: 16px/1.5 Arial, sans-serif; }
-.sidebar { position: fixed; inset: 0 auto 0 0; width: 190px; padding: 24px 16px; background: #302637; color: white; overflow-y: auto; }
-.brand { font-weight: bold; margin: 0 0 32px; }
-nav { display: grid; gap: 8px; }
-nav a { padding: 12px; border-radius: 6px; color: #eae1ef; text-decoration: none; }
-nav a:hover, nav a[aria-current="page"] { background: #54425f; color: white; }
+/* Navegación: terciopelo borgoña, detalles celestes y marco dorado. */
+.sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  width: 190px;
+  padding: 24px 16px;
+  overflow-y: auto;
+  color: #f7e5dd;
+  border-right: 1px solid #cba06b66;
+  background:
+    radial-gradient(ellipse at 15% 0%, #68405b66, transparent 48%),
+    radial-gradient(ellipse at 90% 100%, #641b3544, transparent 55%),
+    linear-gradient(170deg, #301327, #1d101e 65%, #270e1a);
+  box-shadow: inset -5px 0 0 #160c1644, inset -6px 0 0 #cba06b18;
+  scrollbar-color: #806047 #24101f;
+  scrollbar-width: thin;
+}
+
+.sidebar .brand {
+  position: relative;
+  margin: 8px 0 34px;
+  padding: 68px 0 24px;
+  color: #e8c999;
+  font: 600 20px/1.4 Georgia, 'Times New Roman', serif;
+  letter-spacing: .035em;
+  text-align: center;
+  border-bottom: 1px solid #cba06b40;
+}
+
+/* Emblema dibujado en CSS, sin imágenes ni fuentes externas. */
+.sidebar .brand::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: calc(50% - 24px);
+  width: 48px;
+  height: 48px;
+  border: 1px solid #cba06b99;
+  border-radius: 50%;
+  background:
+    linear-gradient(#e8c999, #e8c999) center / 1px 24px no-repeat,
+    linear-gradient(90deg, #e8c999, #e8c999) center / 24px 1px no-repeat,
+    radial-gradient(circle, #e8c999 0 3px, transparent 4px);
+  box-shadow: 0 0 0 5px #cba06b0d, inset 0 0 18px #cba06b12;
+}
+
+.sidebar .brand::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: calc(50% - 3px);
+  width: 6px;
+  height: 6px;
+  background: #cba06b;
+  transform: rotate(45deg);
+  box-shadow: 0 0 0 4px #291322;
+}
+
+.sidebar nav { display: grid; gap: 12px; }
+
+.sidebar nav a {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 12px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  color: #d4bfce;
+  font-size: 14px;
+  letter-spacing: .035em;
+  text-decoration: none;
+  transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+
+.sidebar nav a::before {
+  content: '';
+  flex: 0 0 14px;
+  height: 14px;
+  border: 1px solid currentColor;
+  opacity: .8;
+}
+
+.sidebar nav a[data-route='ruleta']::before {
+  border-radius: 50%;
+  background: radial-gradient(circle, currentColor 0 2px, transparent 3px);
+}
+
+.sidebar nav a[data-route='cartas']::before {
+  flex-basis: 10px;
+  height: 15px;
+  margin-left: 2px;
+  margin-right: 2px;
+  border-radius: 2px;
+  box-shadow: 3px 2px 0 -1px #291322, 3px 2px 0 0 currentColor;
+  transform: rotate(-9deg);
+}
+
+.sidebar nav a:hover {
+  background: #5b466f33;
+  border-color: #cba06b40;
+  color: #fff5ec;
+}
+
+.sidebar nav a[aria-current='page'] {
+  color: #e8c999;
+  border-color: #cba06b88;
+  background: linear-gradient(110deg, #5b466f88, #44132688);
+  box-shadow: inset 3px 0 0 #cba06b, inset 0 0 16px #cba06b08;
+}
+
+.sidebar nav a:focus-visible { outline: 2px solid #e8c999; outline-offset: 3px; }
+
+@media (max-width: 650px) {
+  .sidebar .brand { font-size: 15px; letter-spacing: 0; }
+  .sidebar nav a { padding: 12px 8px; gap: 8px; font-size: 13px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sidebar nav a { transition: none; }
+}
 a:focus-visible { outline: 2px solid #e8c999; outline-offset: 3px; }
 main { margin-left: 190px; padding: 32px; }
 body[data-route="ruleta"] main {
