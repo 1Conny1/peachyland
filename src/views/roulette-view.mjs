@@ -2,6 +2,10 @@ import { createCard } from '../cards/card.mjs';
 import { ZODIAC } from '../cards/zodiac.mjs';
 import { prepareDraw } from '../draw/prepare-draw.mjs';
 import { dealCards } from '../roulette/deal-animation.mjs';
+import { chargeCards } from '../roulette/charge-animation.mjs';
+import { convergeCards } from '../roulette/converge-animation.mjs';
+import { explodeCards } from '../roulette/explode-animation.mjs';
+import { revealWinner } from '../roulette/reveal-animation.mjs';
 import { CARD_WIDTH, createDealPositions } from '../roulette/layout.mjs';
 
 // El elemento cancela su trabajo automáticamente cuando la navegación lo retira.
@@ -131,14 +135,48 @@ export async function mountRoulette(container, { actionsProvider }) {
             status.textContent = `${dealt} de ${round.plan.total} cartas en la mesa · ${remaining} en el mazo`;
           },
         });
-        status.textContent = 'Reparto completado. Todas las cartas están sobre la mesa.';
+        await chargeCards({
+          cards: round.cards,
+          signal,
+          onPhase(phase) {
+            const messages = {
+              pause: 'Todas las cartas están sobre la mesa…',
+              charging: 'Las cartas están cargando energía…',
+              charged: 'La energía está lista.',
+            };
+            status.textContent = messages[phase];
+          },
+          async whileCharged() {
+            status.textContent = 'Las cartas se reúnen en el centro…';
+            await convergeCards({ cards: round.cards, signal });
+            status.textContent = 'La energía se libera…';
+            await explodeCards({
+              cards: round.cards,
+              width: viewport.clientWidth,
+              height: viewport.clientHeight,
+              signal,
+            });
+          },
+        });
+        status.textContent = 'La carta elegida regresa…';
+        await revealWinner({
+          card: round.cards[round.plan.winnerIndex],
+          actionText: round.plan.selectedAction.text,
+          table: host.querySelector('.roulette-table'),
+          width: viewport.clientWidth,
+          height: viewport.clientHeight,
+          signal,
+          prepareAssets: waitForCard,
+        });
+        // También se anuncia el texto completo fuera de la carta, sin truncarlo.
+        status.textContent = `Acción elegida: ${round.plan.selectedAction.text}`;
       } catch (error) {
         if (signal.aborted) return;
         layer.replaceChildren();
         deckTop.replaceChildren();
         deck.hidden = true;
         deck.style.setProperty('--thickness', '24px');
-        status.textContent = `No se pudo completar el reparto: ${error.message}`;
+        status.textContent = `No se pudo completar la secuencia: ${error.message}`;
       } finally {
         running = false;
         if (!signal.aborted) {

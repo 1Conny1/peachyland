@@ -189,3 +189,95 @@ ya no se sustituye durante el recorrido.
 
 El plan completo continúa preparándose antes de animar y la acción seleccionada
 permanece oculta. Al repetir, se prepara un mazo nuevo con su primera carta real.
+
+## Etapa 5 — Carga de energía
+
+El usuario autorizó la fase de carga y pidió coherencia cromática con cartas y fondo.
+Se añadió charge-animation.mjs y se conectó después del reparto en la vista existente.
+La secuencia usa pausa de 450 ms, carga de 1400 ms, sostén de 300 ms y salida suave
+de 350 ms para terminar esta prueba. El temblor aumenta hasta unos 2,5 px; el halo
+utiliza dorado del marco, ciruela y borgoña, sin blanco ni blanqueamiento del retrato.
+
+Los controles permanecen desactivados hasta finalizar. El módulo conserva las
+posiciones del reparto, admite cancelación al navegar y elimina sus efectos al
+terminar. Movimiento reducido muestra solo el halo gradual. No se implementa aún
+convergencia, explosión ni revelación. Estado: implementado para revisión visual.
+
+## Etapa 6 — Convergencia al centro
+
+El usuario aprobó visualmente la carga de energía y pidió continuar la animación.
+Se conecta la convergencia después del sostén de la carga: las mismas cartas viajan
+al centro en 620–660 ms, con ligeras diferencias de posición y rotación. El halo
+dorado/ciruela/borgoña permanece durante el recorrido y después se desvanece.
+
+converge-animation.mjs separa el movimiento del sorteo y devuelve los destinos para
+conectar futuras fases. charge-animation.mjs ofrece whileCharged para mantener
+el halo mientras se ejecuta esa fase. No se modifica la probabilidad 1/n ni la
+selección previa del resultado; no se crean frontales. Los controles siguen
+bloqueados hasta completar toda la secuencia. Cancelar restaura posiciones y limpia
+efectos. Movimiento reducido sustituye el vuelo por una aparición breve central.
+
+Esta entrega termina con las cartas reunidas; explosión y revelación quedan para
+el siguiente paso. Los archivos originales protegidos no se modifican.
+Estado: implementado para revisión visual; pruebas automatizadas de destinos,
+finalización, cancelación y continuidad del halo incluidas.
+
+## Etapa 7 — Explosión de las cartas
+
+El usuario confirmó que hasta la convergencia todo está correcto y autorizó continuar.
+Se incorpora explode-animation.mjs: tras 140 ms de reunión, las mismas cartas salen
+en distintas direcciones durante 720–800 ms, con giros alternados y el halo existente
+dorado/ciruela/borgoña. No se añaden destellos blancos ni se modifican los originales.
+
+Los destinos consideran el tamaño de la mesa y la diagonal de las cartas. Al acabar,
+las cartas quedan ocultas fuera del escenario, incluso si luego cambia la ventana.
+El módulo devuelve los destinos para conectar el regreso de la ganadora; no conoce
+el resultado, no vuelve a sortear y todavía no construye ningún frontal.
+
+Los controles se mantienen bloqueados durante toda la secuencia. La cancelación
+restaura los estilos y libera animaciones; movimiento reducido sustituye el vuelo
+por un desvanecimiento. Esta etapa termina intencionalmente con la mesa vacía y
+permite repetir. Regreso y revelación se reservan para la siguiente etapa.
+
+Estado: implementado para revisión visual. Se añaden pruebas de salidas completas,
+cantidades dinámicas, movimiento reducido, finalización y cancelación.
+
+## Etapa 8 — Regreso y revelación
+
+El usuario aprobó la explosión y autorizó continuar. reveal-animation.mjs recibe
+exclusivamente la carta del winnerIndex y el texto selectedAction del plan original.
+Después de la explosión, estando oculta y fuera del escenario, se construye su
+frontal y se espera la imagen antes de hacerla regresar. Ninguna otra frontal
+se construye y no se realiza otro sorteo.
+
+La carta vuelve desde su posición de salida al centro en 1000 ms, ampliándose
+uniformemente hasta 1,5 veces (limitado por el espacio disponible). Movimiento
+reducido usa aparición de 250 ms. El resultado queda visible hasta repetir;
+el estado accesible anuncia la acción completa, también útil si el texto es largo.
+Los controles se desbloquean al finalizar; cancelar oculta la carta y limpia su
+animación. Los cuatro originales siguen intactos.
+
+Estado: implementado para revisión visual. Se añaden pruebas de preparación oculta,
+regreso, movimiento reducido y cancelación. No se integra persistencia ni Electron.
+
+## Ajuste — Entrada variable e impacto sobre la mesa
+
+El usuario aprobó el regreso y solicitó entradas desde cualquier borde y una caída
+con fuerza. Se conserva la curva de regreso de 1000 ms, ahora desde uno de los
+cuatro bordes elegido con azar exclusivamente visual. La carta llega ligeramente
+elevada, desciende en 150 ms y hace un rebote amortiguado de 300 ms. Al contacto,
+la mesa tiembla durante 300 ms, con desplazamientos decrecientes de hasta 6 px.
+No se añaden destellos blancos ni se altera la selección previa de la acción.
+
+Los efectos se limpian al terminar o cancelar; los controles esperan el impacto.
+Movimiento reducido mantiene únicamente la aparición, sin caída ni sacudida.
+Estado: implementado para revisión visual, con pruebas de los cuatro bordes y
+limpieza del temblor. Los archivos originales permanecen intactos.
+
+## Ajuste — Panel inferior anclado al borde
+
+El usuario aprobó la animación y señaló la separación bajo el panel de controles.
+Se elimina su margen inferior de 25 px y se dejan rectas las esquinas inferiores
+para unirlo al borde de la mesa. Solo cambia .roulette-controls en table.css;
+no se modifican cartas, animaciones ni la imagen original del fondo.
+Estado: implementado para revisión visual.
