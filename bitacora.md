@@ -328,3 +328,23 @@ el vuelo mediante una propiedad CSS registrada, evitando el salto al finalizar.
 Las cartas y las trayectorias existentes se conservan. Se añade una regresión
 para comprobar que no queda decoración al salir la última carta.
 Estado: corrección implementada; apariencia pendiente de revisión visual.
+
+## Barra lateral — Diseño aprobado
+
+El usuario aprobó el aspecto de la barra lateral tras revisar la captura completa:
+fondo borgoña y ciruela, detalles dorados, emblema celestial, iconos de navegación
+y resaltado de la sección activa. Se conserva el espacio libre bajo el menú.
+Los cambios visuales están limitados a la barra lateral en src/app/shell.css.
+Estado: aprobado visualmente; se mantiene este diseño.
+
+## Estela de luz del cursor
+
+El usuario propuso una estela y autorizó implementarla. Se añade un módulo visual
+compartido por las vistas: partículas doradas y ciruela, con pequeños destellos
+de cuatro puntas, que se desvanecen en 650 ms. Un canvas transparente permite
+seguir pulsando todos los controles y conserva el cursor habitual.
+
+La estela limita sus partículas a 80 y deja de animarse al vaciarse. Se limpia
+al salir de la ventana, perder foco o cambiar el tamaño. Respeta la preferencia
+de movimiento reducido y solo responde al ratón. Estado: pendiente de revisión
+visual del usuario.

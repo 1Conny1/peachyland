@@ -1,6 +1,9 @@
 import { createActionsProvider } from '../data/actions-provider.mjs';
 import { mountRoulette } from '../views/roulette-view.mjs';
 import { mountCards } from '../views/cards-view.mjs';
+import { mountCursorTrail } from './cursor-trail.mjs';
+
+mountCursorTrail();
 
 const services = { actionsProvider: createActionsProvider() };
 const routes = { ruleta: mountRoulette, cartas: mountCards };
