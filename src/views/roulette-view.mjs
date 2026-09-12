@@ -70,6 +70,7 @@ export async function mountRoulette(container, { actionsProvider }) {
     layer.replaceChildren();
     deckTop.replaceChildren();
     deck.style.setProperty('--thickness', '24px');
+    deck.querySelector('.deck-edge').hidden = actions.length <= 1;
 
     // El resultado y todos los reversos quedan definidos antes de animar.
     const plan = prepareDraw(actions, ZODIAC.map(sign => sign.id));

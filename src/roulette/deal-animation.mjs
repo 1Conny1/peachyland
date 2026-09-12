@@ -5,6 +5,9 @@ export async function dealCards({ cards, plan, positions, deck, layer, signal, o
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const duration = reducedMotion ? 60 : 460;
   const deckTop = deck.querySelector('.deck-top');
+  const deckEdge = deck.querySelector('.deck-edge');
+  // Con una sola carta no debe existir ninguna capa decorativa debajo.
+  deckEdge.hidden = cards.length <= 1;
 
   async function animate(element, keyframes) {
     signal.throwIfAborted();
@@ -44,6 +47,8 @@ export async function dealCards({ cards, plan, positions, deck, layer, signal, o
     deckTop.replaceChildren();
     const nextCard = cards[index + 1]?.element;
     if (nextCard) deckTop.append(nextCard);
+    deckEdge.hidden = remaining <= 1;
+    if (remaining === 0) deck.hidden = true;
 
     // El estilo final permanece después de cancelar el objeto Animation.
     card.style.transform = destination;
@@ -58,14 +63,12 @@ export async function dealCards({ cards, plan, positions, deck, layer, signal, o
           { transform: destination, offset: 1 },
         ];
 
-    const thinning = [
-      { height: `${before}px`, transform: `translateY(${-before}px)` },
-      { height: `${after}px`, transform: `translateY(${-after}px)` },
-    ];
-
     await Promise.all([
       animate(card, flight),
-      animate(deck.querySelector('.deck-edge'), thinning),
+      animate(deck, [
+        { '--thickness': `${before}px` },
+        { '--thickness': `${after}px` },
+      ]),
       animate(deckTop, [
         { transform: `translateY(${-before}px)` },
         { transform: `translateY(${-after}px)` },

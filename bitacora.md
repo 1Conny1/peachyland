@@ -281,3 +281,50 @@ Se elimina su margen inferior de 25 px y se dejan rectas las esquinas inferiores
 para unirlo al borde de la mesa. Solo cambia .roulette-controls en table.css;
 no se modifican cartas, animaciones ni la imagen original del fondo.
 Estado: implementado para revisión visual.
+
+## Ajuste visual — Formación del mazo
+
+Con la animación principal aprobada, el usuario pidió que la baraja inicial se
+perciba como un mazo real y no como una carta sobre una plataforma rayada. Se
+modifica únicamente su presentación en table.css: el canto queda ligeramente
+más estrecho que la carta superior, integra capas marfil con divisiones doradas
+y ciruela, oscurece suavemente los laterales y une la sombra al cuerpo del mazo.
+
+El grosor continúa disminuyendo con la lógica existente y llega a cero con la
+última carta. No cambian el reparto, el sorteo, las cartas ni los originales.
+Estado: implementado para revisión visual.
+
+## Corrección visual — Ancho exacto del mazo
+
+El usuario percibió el mazo más pequeño que las cartas ya aprobadas. La carta
+superior sí compartía sus medidas exactas de 150 × 213,33; la diferencia visual
+provenía del canto, que estaba retraído 3 px a cada lado. Se corrige únicamente
+el canto del mazo para ocupar exactamente 150 px incluyendo sus bordes mediante
+box-sizing: border-box. Las cartas repartidas no se modifican.
+
+## Rediseño visual — Mazo compuesto por cartas
+
+Tras revisar la segunda captura, se confirma que el tamaño era correcto pero el
+canto seguía pareciendo un zócalo. Se sustituye únicamente la representación del
+mazo por tres cuerpos completos de carta detrás de la carta superior real. Las
+capas comparten exactamente 150 × 213,33, borde borgoña, interior ciruela y línea
+dorada; pequeños desplazamientos verticales permiten reconocer la superposición.
+
+El módulo de reparto conserva las cartas aprobadas y ahora acerca la carta superior
+a esas capas conforme disminuye el grosor. Al entregar la última, todas coinciden
+y el mazo desaparece como antes. No cambian las cartas repartidas, sus estilos,
+el sorteo ni el resto de la animación. Estado: implementado para revisión visual.
+
+## Corrección — Agotamiento de las capas del mazo
+
+El usuario detectó una carta decorativa residual después de salir la última real.
+Las capas completas añadidas en la iteración anterior no se retiraban hasta acabar
+el último vuelo. Ahora se ocultan bajo la carta superior al quedar una sola carta;
+el contenedor vacío se oculta al comenzar el último vuelo. La preparación restaura
+las capas según el número de acciones, también al repetir con una sola acción.
+
+Se alinea el apilado y se atenúan sus líneas doradas. El grosor se interpola durante
+el vuelo mediante una propiedad CSS registrada, evitando el salto al finalizar.
+Las cartas y las trayectorias existentes se conservan. Se añade una regresión
+para comprobar que no queda decoración al salir la última carta.
+Estado: corrección implementada; apariencia pendiente de revisión visual.
