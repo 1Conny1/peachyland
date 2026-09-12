@@ -3,6 +3,10 @@ import { ZODIAC } from './zodiac.mjs';
 const styleUrl = new URL('./card.css', import.meta.url).href;
 const defaultPortrait = new URL('../../perfil.png', import.meta.url).href;
 
+export const BASE_CARD_WIDTH = 225;
+export const BASE_CARD_HEIGHT = 320;
+export const CARD_HEIGHT_RATIO = BASE_CARD_HEIGHT / BASE_CARD_WIDTH;
+
 /** Crea solamente el reverso. El consumidor conserva la acción y controla el movimiento. */
 export function createCard({ signId, width = 225, portraitUrl = defaultPortrait } = {}) {
   const sign = ZODIAC.find(item => item.id === signId);
@@ -74,8 +78,8 @@ export function createCard({ signId, width = 225, portraitUrl = defaultPortrait 
   function setWidth(value) {
     if (!Number.isFinite(value) || value <= 0) throw new RangeError('El ancho debe ser positivo.');
     element.style.width = `${value}px`;
-    element.style.height = `${value * 8 / 5}px`;
-    surface.style.transform = `scale(${value / 225})`;
+    element.style.height = `${value * CARD_HEIGHT_RATIO}px`;
+    surface.style.transform = `scale(${value / BASE_CARD_WIDTH})`;
   }
 
   showBack();

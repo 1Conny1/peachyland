@@ -41,16 +41,15 @@ El resultado expone:
   Devuelve false si no puede medir (sin montar o sin estilos), o si no cabe.
 - `fitFront()`: permite repetir la medición tras montar/cargar estilos.
 - `showBack()`: restaura el reverso y elimina la frontal.
-- `setWidth(px)`: cambia el tamaño conservando la proporción 5:8.
+- `setWidth(px)`: cambia el tamaño conservando la proporción 45:64, cercana a 7:10.
 
 No hay temporizadores, escuchas globales ni observadores propios que liberar:
 el consumidor retira `element` cuando termina y cancela sus propias animaciones.
 
 ## Tamaño y fidelidad
 
-La superficie interna conserva 225 × 360 px y se escala proporcionalmente.
-El contenedor exterior queda libre para movimiento. A 82 px la altura es 131,2 px:
-la futura animación deberá considerar esta proporción, distinta de 82 × 116 del MVP.
+La superficie interna conserva 225 × 320 px y se escala proporcionalmente.
+El contenedor exterior queda libre para movimiento. La ruleta utiliza 150 × 213,33 px.
 Los detalles se conservan completos; su legibilidad a escala compacta queda
 pendiente de revisión visual. No se eliminan ornamentos automáticamente.
 

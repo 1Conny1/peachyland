@@ -7,6 +7,13 @@ nav a { padding: 12px; border-radius: 6px; color: #eae1ef; text-decoration: none
 nav a:hover, nav a[aria-current="page"] { background: #54425f; color: white; }
 a:focus-visible { outline: 2px solid #e8c999; outline-offset: 3px; }
 main { margin-left: 190px; padding: 32px; }
+body[data-route="ruleta"] main {
+  height: 100dvh;
+  padding: 0;
+  overflow: hidden;
+  background: #250913;
+}
+body[data-route="ruleta"] main > div { height: 100%; }
 h1 { margin-top: 0; }
 section { margin-top: 36px; }
 .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(245px, 1fr)); gap: 24px; }
@@ -14,4 +21,4 @@ figure { margin: 0; display: grid; justify-items: center; align-content: start; 
 figcaption { text-align: center; overflow-wrap: anywhere; }
 .table-placeholder { min-height: 480px; display: grid; place-items: center; border-radius: 10px; background: #250913 url('../../background.png') center / cover; color: white; padding: 24px; }
 .table-placeholder p { padding: 16px; background: #250913dd; border-radius: 6px; }
-@media (max-width: 650px) { .sidebar { width: 125px; padding: 20px 8px; } main { margin-left: 125px; padding: 20px 12px; } .cards-grid { grid-template-columns: 1fr; } }
+@media (max-width: 650px) { .sidebar { width: 125px; padding: 20px 8px; } main { margin-left: 125px; padding: 20px 12px; } body[data-route="ruleta"] main { padding: 0; } .cards-grid { grid-template-columns: 1fr; } }

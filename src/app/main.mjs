@@ -12,6 +12,9 @@ async function navigate({ focus = false } = {}) {
     route = 'ruleta';
     history.replaceState(null, '', '#/ruleta');
   }
+
+  document.body.dataset.route = route;
+
   for (const link of document.querySelectorAll('[data-route]')) {
     if (link.dataset.route === route) link.setAttribute('aria-current', 'page');
     else link.removeAttribute('aria-current');

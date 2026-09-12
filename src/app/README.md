@@ -5,7 +5,7 @@ los módulos ES pueden estar bloqueados al abrir el archivo con doble clic.
 
 - `main.mjs`: navegación por hash (`#/ruleta`, `#/cartas`), historial, ruta inicial
   y conexiones. Inyecta `actionsProvider` a las vistas.
-- `../views/roulette-view.mjs`: espacio reservado para la futura animación.
+- `../views/roulette-view.mjs`: conecta mesa, mazo y reparto con los datos.
 - `../views/cards-view.mjs`: galería de frentes dinámicos y los doce reversos.
 - `../data/actions.mock.mjs`: documento simulado `{ version: 1, actions: [{ id, text }] }`.
 - `../data/actions-provider.mjs`: contrato asíncrono `listActions()`, sin dependencias
