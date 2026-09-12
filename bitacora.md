@@ -458,3 +458,42 @@ cerrarlo elimina esa copia. El servidor del puerto 8080 lee el disco y entrega
 el módulo correcto. Para recuperar el flujo habitual en Zed, revisar primero
 si hay cambios propios sin guardar en `cards-view.mjs`, cerrar ese archivo en
 Zed sin sobrescribir la versión buena del disco, reabrirlo y recargar 57391.
+
+## Agregar acciones desde Cartas — almacenamiento simulado
+
+Se integra el formulario «Nueva acción» en la sección Cartas, con el estilo
+ciruela y dorado de la galería. Cada alta aparece como carta y actualiza los
+contadores. El proveedor compartido incorpora `addAction(text)` asíncrono,
+genera identificadores únicos y mantiene una copia privada en memoria del
+documento simulado. No modifica el archivo de ejemplo ni escribe almacenamiento
+local; los datos duran al navegar y se restablecen al recargar. Esta limitación
+se explica en el formulario. El futuro adaptador Electron implementará
+`listActions()` y `addAction(text)` para sustituir la simulación.
+
+Se valida texto no vacío de hasta 120 caracteres; los envíos se bloquean mientras
+se procesa el alta y los errores conservan el texto para corregirlo. Un fallo
+visual después de agregar se distingue de un fallo de almacenamiento para evitar
+que el usuario repita accidentalmente un alta que sí se realizó.
+
+Verificación: nueve pruebas de proveedor y sorteo aprobadas. En navegador se
+agregó una acción: 10 → 11 acciones, carta visible, probabilidad 1/11 en Ruleta
+y conservación al volver a Cartas. Se rechazó texto en blanco y se recargó para
+retirar la acción de prueba. Comprobación realizada en 8081 con módulos recién
+cargados, después de detectar un módulo antiguo en la caché de la vista 8080.
+
+## Eliminar acciones desde Cartas
+
+Cada carta de acción incluye un botón Eliminar debajo del diseño. El proveedor
+compartido incorpora `removeAction(id)`: retira exclusivamente ese identificador
+y conserva intacto el documento de ejemplo. Se actualizan carta, contadores y
+advertencias de texto; la ruleta recibe la colección restante al entrar. Se
+bloquean altas y bajas durante cada operación y se conserva la carta si falla
+la eliminación. Tras borrar, el foco pasa al siguiente control disponible.
+Los doce reversos zodiacales no tienen controles de eliminación.
+
+Verificado en navegador: 10 → 9 acciones y probabilidad 1/9; colección vacía
+con reparto desactivado; agregar después de vaciar y eliminar una acción recién
+creada. Se restablecieron los datos iniciales tras las pruebas. Diez pruebas
+de proveedor y sorteo aprobadas, incluyendo eliminación por ID de textos iguales,
+ID inexistente, vaciado completo e independencia del documento inicial.
+Altas y bajas siguen siendo temporales hasta conectar almacenamiento local.
