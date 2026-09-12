@@ -376,3 +376,23 @@ palabras separadas, aunque el HTML guardado era válido. Se recuperan los enlace
 simples en index.html y se construyen los rótulos con createElement/textContent al
 iniciar. Cada etiqueta queda en una sola línea sin encogerse. Se conserva el brillo
 sobre las letras. Causa de la discrepancia en el navegador sin confirmar.
+
+## Recuperación de la sección Cartas · 2026-09-12
+
+El usuario informó de una reversión accidental en este proyecto y pidió recuperar
+la galería. La vista volvió a su versión inicial, pero sobrevivieron como archivos
+sin seguimiento cards-view.css, gallery-sky.svg y las fuentes con sus licencias.
+Se restauró cards-view.mjs desde el estado final documentado en esta conversación.
+
+Estado recuperado: cabecera «El arte de las cartas», secciones de acciones y zodiaco
+con cantidades, cartas libres sin paneles ni etiquetas duplicadas, contorno mate
+tenue y elevación/inclinación al pasar el cursor. La tipografía elegida es Lora 700
+(título hasta 48 px y secciones de 32 px), con textos secundarios ampliados y brillo
+dorado periódico en títulos. El fondo celestial incorpora constelaciones laterales,
+estrellas discretas y luces borgoña/ciruela. Se respeta movimiento reducido.
+
+Se conserva la hoja independiente de galería: solucionó que la vista previa
+sirviera CSS corrupto distinto del archivo guardado. No se restauran las propuestas
+descartadas de paneles, tipografías anteriores ni halos intensos. La ruleta, la barra
+lateral, los datos y los cuatro originales permanecen intactos.
+Lora fue aceptada para continuar; el fondo conserva el último diseño implementado.

@@ -11,5 +11,6 @@ export const actionsDocument = {
     { id: 'venganza', text: 'Sanz toma venganza' },
     { id: 'likes', text: '50/50 Muestras o muestro mis likes' },
     { id: 'vip', text: 'Regalas o ganas VIP (una semana)' },
+    {id: 'pru1', text: 'prueba para texto'},
   ],
 };
