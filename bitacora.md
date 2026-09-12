@@ -348,3 +348,31 @@ La estela limita sus partículas a 80 y deja de animarse al vaciarse. Se limpia
 al salir de la ventana, perder foco o cambiar el tamaño. Respeta la preferencia
 de movimiento reducido y solo responde al ratón. Estado: pendiente de revisión
 visual del usuario.
+
+## Reflejo periódico en la barra lateral
+
+El usuario autorizó un brillo ocasional de izquierda a derecha. Se incorpora
+un reflejo dorado tenue mediante CSS, con una pasada de aproximadamente 2,6 s
+en cada ciclo de 12 s. La capa permanece dentro de la barra y permite los clics.
+Movimiento reducido desactiva el efecto. Estado: implementado para revisión visual.
+
+El usuario aclaró que el brillo corresponde a los selectores de páginas, no al
+fondo de la barra. Se retira el reflejo general y se aplica dentro de cada enlace
+de navegación, respetando sus esquinas. Ahora pasa durante 2 s cada 4 s, con un
+desfase de 0,6 s entre opciones. Se conserva el dorado y la opción de movimiento
+reducido. Estado: ajuste implementado para revisión visual.
+
+## Brillo sobre las letras y tipografía del menú
+
+El usuario precisó que el reflejo debe recorrer las letras, no las cajas. Se elimina
+la capa de brillo del enlace y se envuelve cada etiqueta en un span para recortar
+el degradado al texto. Ruleta y Cartas usan Georgia negrita a 16 px (14 px en barra
+estrecha), con mayor presencia y continuidad con la marca. El reflejo dorado mantiene
+el ciclo de 4 s. Movimiento reducido y colores forzados muestran texto estático.
+Estado: implementado para revisión visual; cambios limitados al menú lateral.
+
+Corrección posterior: la captura del usuario mostraba fragmentos de etiquetas y
+palabras separadas, aunque el HTML guardado era válido. Se recuperan los enlaces
+simples en index.html y se construyen los rótulos con createElement/textContent al
+iniciar. Cada etiqueta queda en una sola línea sin encogerse. Se conserva el brillo
+sobre las letras. Causa de la discrepancia en el navegador sin confirmar.

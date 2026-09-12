@@ -18,6 +18,55 @@ body { margin: 0; color: #29232e; background: #f4f1f5; font: 16px/1.5 Arial, san
   scrollbar-width: thin;
 }
 
+/* El degradado se recorta a los trazos de las letras; los iconos quedan aparte. */
+.sidebar .nav-label {
+  display: inline-block;
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+  .sidebar .nav-label {
+    background: linear-gradient(
+      105deg,
+      currentColor 40%,
+      #cba06b 46%,
+      #ffe3a6 50%,
+      #cba06b 54%,
+      currentColor 60%
+    ) 100% 0 / 300% 100% no-repeat;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: sidebar-text-sheen 4s ease-in-out infinite;
+  }
+}
+
+.sidebar nav a:nth-child(even) .nav-label {
+  animation-delay: .6s;
+}
+
+@keyframes sidebar-text-sheen {
+  0% { background-position: 100% 0; }
+  50%, 100% { background-position: 0% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sidebar .nav-label {
+    animation: none;
+    background: none;
+    -webkit-text-fill-color: currentColor;
+  }
+}
+
+@media (forced-colors: active) {
+  .sidebar .nav-label {
+    animation: none;
+    background: none;
+    -webkit-text-fill-color: LinkText;
+  }
+}
+
 .sidebar .brand {
   position: relative;
   margin: 8px 0 34px;
@@ -69,7 +118,7 @@ body { margin: 0; color: #29232e; background: #f4f1f5; font: 16px/1.5 Arial, san
   border: 1px solid transparent;
   border-radius: 9px;
   color: #d4bfce;
-  font-size: 14px;
+  font: 700 16px/1.5 Georgia, 'Times New Roman', serif;
   letter-spacing: .035em;
   text-decoration: none;
   transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
@@ -115,7 +164,7 @@ body { margin: 0; color: #29232e; background: #f4f1f5; font: 16px/1.5 Arial, san
 
 @media (max-width: 650px) {
   .sidebar .brand { font-size: 15px; letter-spacing: 0; }
-  .sidebar nav a { padding: 12px 8px; gap: 8px; font-size: 13px; }
+  .sidebar nav a { padding: 12px 8px; gap: 8px; font-size: 14px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

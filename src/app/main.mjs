@@ -5,6 +5,14 @@ import { mountCursorTrail } from './cursor-trail.mjs';
 
 mountCursorTrail();
 
+// Construir cada rótulo como texto mantiene el brillo separado del icono.
+for (const link of document.querySelectorAll('.sidebar nav a[data-route]')) {
+  const label = document.createElement('span');
+  label.className = 'nav-label';
+  label.textContent = link.dataset.route === 'ruleta' ? 'Ruleta' : 'Cartas';
+  link.replaceChildren(label);
+}
+
 const services = { actionsProvider: createActionsProvider() };
 const routes = { ruleta: mountRoulette, cartas: mountCards };
 const content = document.querySelector('#content');
