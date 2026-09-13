@@ -1,20 +1,22 @@
 import { createActionsProvider } from '../data/actions-provider.mjs';
 import { mountRoulette } from '../views/roulette-view.mjs';
 import { mountCards } from '../views/cards-view.mjs';
+import { mountCoin } from '../views/coin-view.mjs';
 import { mountCursorTrail } from './cursor-trail.mjs';
 
 mountCursorTrail();
+const routeNames = { ruleta: 'Ruleta', cartas: 'Cartas', moneda: 'Moneda' };
 
 // Construir cada rótulo como texto mantiene el brillo separado del icono.
 for (const link of document.querySelectorAll('.sidebar nav a[data-route]')) {
   const label = document.createElement('span');
   label.className = 'nav-label';
-  label.textContent = link.dataset.route === 'ruleta' ? 'Ruleta' : 'Cartas';
+  label.textContent = routeNames[link.dataset.route];
   link.replaceChildren(label);
 }
 
 const services = { actionsProvider: createActionsProvider() };
-const routes = { ruleta: mountRoulette, cartas: mountCards };
+const routes = { ruleta: mountRoulette, cartas: mountCards, moneda: mountCoin };
 const content = document.querySelector('#content');
 
 async function navigate({ focus = false } = {}) {
@@ -30,7 +32,7 @@ async function navigate({ focus = false } = {}) {
     if (link.dataset.route === route) link.setAttribute('aria-current', 'page');
     else link.removeAttribute('aria-current');
   }
-  document.title = `${route === 'cartas' ? 'Cartas' : 'Ruleta'} · Peachyland`;
+  document.title = `${routeNames[route]} · Peachyland`;
   // Cada navegación tiene su propio contenedor; una carga anterior no puede
   // reemplazar la vista nueva si el usuario navega mientras espera.
   const view = document.createElement('div');

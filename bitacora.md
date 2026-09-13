@@ -680,3 +680,74 @@ vacíos `Microsoft/Spelling/neutral`. No había archivos, acciones ni código.
 Tras verificar cada ruta y contenido, se retiraron solo esas 19 carpetas.
 La raíz conserva `.git`, `demos`, `electron`, `node_modules`, `src` y `tests`.
 No se cambió código ni se tocaron los datos reales del usuario.
+
+## Moneda — 2026-09-12
+
+Se añadió «Moneda» como tercera sección de la navegación. La vista utiliza el
+fondo zodiacal de la ruleta y una moneda dorada con dos caras identificadas
+como «CARA» y «CRUZ». Al pulsar «Lanzar moneda», se elige una de las dos con
+probabilidad 1/2 mediante `crypto.getRandomValues`, antes de iniciar el giro.
+El botón se bloquea durante la animación y, al terminar, la cara visible y el
+mensaje de resultado coinciden. Se puede lanzar de nuevo sin salir de la vista.
+Con movimiento reducido, el cambio dura 240 ms sin giros rápidos.
+
+Se comprobó en Electron con carpeta `userData` aislada: la vista cargó el fondo,
+la navegación y el título «Moneda · Peachyland»; se inspeccionaron capturas de
+inicio, vuelo y resultado. La primera revisión reveló que una sombra con filtro
+aplanaba la moneda 3D: se trasladó esa sombra a las caras y una nueva captura
+mostró correctamente «CRUZ» junto a «Salió cruz». En otras ejecuciones se
+observaron «Salió cara» con la cara frontal, el segundo lanzamiento y la rama
+de movimiento reducido. Pasaron las 39 pruebas automáticas. Estas capturas
+verifican la instancia local de Electron, no una sesión posterior de la streamer.
+No se abrió ni alteró el archivo real de acciones.
+Las ejecuciones de Electron generaron seis carpetas Unicode sin archivos
+(cinco con `Microsoft/Spelling/neutral` vacío) pese a desactivar Spellcheck.
+Se verificó su contenido y ubicación antes de borrarlas. También se retiraron
+el perfil aislado y el guion temporal de la prueba; la raíz volvió a contener
+solo los directorios habituales del proyecto.
+
+## Ajuste visual de Moneda — 2026-09-13
+
+El usuario pidió una moneda más acorde con las cartas y centrada en la rueda
+zodiacal. Se sustituyó el acabado metálico liso por un disco de esmalte
+ciruela/borgoña con aros dorados, la firma Peachyland y símbolos de sol y luna.
+Un halo y un reflejo tenues aportan brillo; ambos dejan de animarse con la
+preferencia de movimiento reducido. El centro de la moneda se fijó al 46,3 %
+de la altura de la mesa, que corresponde al centro de la rueda en `background.png`.
+Se redujo el símbolo central para separar con claridad el dibujo y el nombre
+de cada cara. No cambió la selección aleatoria ni la lógica del lanzamiento.
+
+Verificado en Electron con perfil aislado mediante capturas de la vista inicial,
+el resultado «Salió cruz», un segundo lanzamiento «Salió cara» en modo de
+movimiento reducido y la ventana de 950 × 650. La posición medida de la moneda
+fue el 46,3 % de la altura de la mesa y las caras visibles coincidieron con
+sus mensajes. Una primera captura de diagnóstico quedó detenida cuando
+Electron marcó la ventana como oculta; al mantener activa la ventana de prueba
+se completó la animación y se obtuvieron las capturas finales. No se usaron
+los datos reales de acciones.
+Las pruebas generaron siete carpetas Unicode sin archivos, todas con solo
+`Microsoft/Spelling/neutral` vacío. Se verificó su contenido y se retiraron
+junto al perfil y guion temporales de Electron. Pasaron las 39 pruebas
+automáticas y `git diff --check`.
+
+## Vuelo e impacto de Moneda — 2026-09-13
+
+Se ajustó el lanzamiento a petición del usuario. El giro ahora usa de 1,5 a
+2,5 vueltas (según la cara anterior y el resultado) repartidas linealmente en
+2,8 segundos. La moneda asciende hasta 240 px en la mesa grande, permanece un
+instante arriba y acelera en el descenso. En ventanas pequeñas la altura se
+limita al espacio disponible para evitar que salga del escenario. Al tocar la
+mesa, hace un rebote de 9 px y activa durante 300 ms exactamente los mismos
+desplazamientos de sacudida que el impacto de la carta ganadora. El halo y la
+sombra se intensifican brevemente. Movimiento reducido conserva el cambio de
+cara sin vuelo ni sacudida.
+
+Verificado en Electron con perfil aislado: se capturaron vuelo alto y resultado;
+la animación midió 240 px de elevación y 2,8 s de giro en la ventana grande.
+El impacto produjo 14 muestras de desplazamiento de la mesa y terminó con
+`translate: none`. En la ventana mínima la elevación fue de 148 px; un segundo
+lanzamiento conservó la cara correcta. Se forzó el modo de movimiento reducido
+para comprobar que termina en «Salió cara» sin sacudida. No se usó el JSON real.
+Pasaron las 39 pruebas automáticas y `git diff --check`. Las dos carpetas
+Unicode vacías creadas por Electron se verificaron y retiraron junto al perfil
+y guion temporales; la raíz conserva solo los directorios habituales.

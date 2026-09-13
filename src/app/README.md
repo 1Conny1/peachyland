@@ -26,6 +26,8 @@ sobrescribe con las acciones iniciales.
 - `main.mjs`: navegación e inyección del proveedor compartido a las vistas.
 - `../views/cards-view.mjs`: galería, formulario de alta y botones de baja.
 - `../views/roulette-view.mjs`: mesa y reparto usando la misma lista actual.
+- `../views/coin-view.mjs`: lanzamiento independiente de cara o cruz sobre el
+  escenario zodiacal; no usa ni modifica el catálogo de acciones.
 
 Agregar o eliminar una acción desde Cartas actualiza el archivo local. La ruleta
 lee el catálogo vigente al abrir su vista y mantiene la probabilidad `1/n` para
