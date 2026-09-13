@@ -30,7 +30,7 @@ export async function mountCards(container, { actionsProvider }) {
             placeholder="Escribe lo que puede salir en la ruleta…"></textarea>
           <button type="submit" disabled>Agregar acción</button>
         </div>
-        <p id="action-help">Hasta ${MAX_ACTION_LENGTH} caracteres. Agregar y eliminar solo afecta esta sesión; al recargar se restablece la colección inicial.</p>
+        <p id="action-help">Hasta ${MAX_ACTION_LENGTH} caracteres. Los cambios se guardan en este equipo.</p>
         <p class="gallery-action-feedback" role="status" aria-live="polite"></p>
       </form>
       <div class="cards-grid" data-fronts></div>
@@ -71,8 +71,11 @@ export async function mountCards(container, { actionsProvider }) {
       removeButton.textContent = 'Eliminar';
       removeButton.setAttribute('aria-label', `Eliminar acción: ${action.text}`);
       removeButton.disabled = true;
-      removeButton.addEventListener('click', () => removeAction(action, figure));
-      figure.append(removeButton);
+      const removeFeedback = document.createElement('p');
+      removeFeedback.className = 'gallery-remove-feedback';
+      removeFeedback.setAttribute('role', 'status');
+      removeButton.addEventListener('click', () => removeAction(action, figure, removeButton, removeFeedback));
+      figure.append(removeButton, removeFeedback);
     }
     target.append(figure);
     return card.ready.then(() => {
@@ -112,10 +115,12 @@ export async function mountCards(container, { actionsProvider }) {
   }
   updateControls();
 
-  async function removeAction(action, figure) {
+  async function removeAction(action, figure, removeButton, removeFeedback) {
     if (saving) return;
     saving = true;
     updateControls();
+    removeButton.textContent = 'Eliminando…';
+    removeFeedback.textContent = '';
     feedback.textContent = '';
     delete feedback.dataset.error;
     let nextFocus = null;
@@ -134,9 +139,11 @@ export async function mountCards(container, { actionsProvider }) {
       if (!container.isConnected) return;
       feedback.dataset.error = 'true';
       feedback.textContent = error.message;
+      removeFeedback.textContent = `No se pudo eliminar: ${error.message}`;
     } finally {
       saving = false;
       if (container.isConnected) {
+        removeButton.textContent = 'Eliminar';
         updateControls();
         nextFocus?.focus();
       }

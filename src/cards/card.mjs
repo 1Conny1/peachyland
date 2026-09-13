@@ -19,8 +19,27 @@ export function createCard({ signId, width = 225, portraitUrl = defaultPortrait 
   const shadow = element.attachShadow({ mode: 'open' });
   const style = document.createElement('link');
   style.rel = 'stylesheet';
+  let styleLoaded = false;
+  const pendingPortraits = [];
   const ready = new Promise((resolve, reject) => {
-    style.onload = resolve;
+    style.onload = () => {
+      try {
+        // Chromium puede desactivar temporalmente un <link> dentro del Shadow DOM
+        // al mover la carta entre el mazo y la mesa. Una hoja adoptada permanece.
+        const sheet = new CSSStyleSheet();
+        sheet.replaceSync([...style.sheet.cssRules].map(rule => rule.cssText).join('\n'));
+        shadow.adoptedStyleSheets = [sheet];
+        style.remove();
+        styleLoaded = true;
+        // La imagen no empieza a renderizarse hasta tener sus reglas de tamaño
+        // y posición. La carta misma nunca queda oculta durante el reparto.
+        for (const image of pendingPortraits) image.src = portraitUrl;
+        pendingPortraits.length = 0;
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    };
     style.onerror = () => reject(new Error('No se pudo cargar el estilo de las cartas.'));
   });
   // Evita rechazos sin manejar mientras el consumidor aún está montando las cartas.
@@ -34,9 +53,10 @@ export function createCard({ signId, width = 225, portraitUrl = defaultPortrait 
     const holder = document.createElement('div');
     holder.className = `profile profile-${position}`;
     const img = document.createElement('img');
-    img.src = portraitUrl;
     img.alt = '';
     img.draggable = false;
+    if (styleLoaded) img.src = portraitUrl;
+    else pendingPortraits.push(img);
     holder.append(img);
     return holder;
   }

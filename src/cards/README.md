@@ -34,7 +34,8 @@ signo está permitido; la estrategia de asignación pertenece a otro módulo.
 El resultado expone:
 
 - `element`: contenedor estable para insertar y animar.
-- `ready`: promesa de carga de CSS; montar el elemento antes de esperarla.
+- `ready`: promesa de carga y adopción del CSS en el Shadow DOM; montar el
+  elemento antes de esperarla. La hoja adoptada permanece al mover la carta.
   No garantiza la carga de un retrato personalizado.
 - `showFront(text)`: construye la frontal y ajusta texto entre 16 y 10 px sobre
   la superficie base. Usa `textContent` para tratar las acciones como texto.
@@ -67,6 +68,6 @@ Comprobar los doce signos frente a la referencia, la fila compacta, el cambio de
 reverso a frontal, acciones largas y restauración. Esta demo no hace sorteos.
 El fondo se configura solo en la demo: no es responsabilidad de la carta.
 
-El futuro proveedor de datos entregará acciones al coordinador; solo este llamará
-a `showFront` con la acción elegida previamente. El módulo visual no necesitará
-cambiar cuando los datos simulados sean reemplazados por JSON mediante Electron.
+El proveedor de datos entrega acciones al coordinador; solo este llama a
+`showFront` con la acción elegida previamente. El módulo visual permanece
+independiente del JSON guardado por Electron.

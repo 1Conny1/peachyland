@@ -510,3 +510,80 @@ tono oscuro. Las cartas y la ruleta no se modifican.
 Se reprodujo en navegador a 1919 × 995 con 13 acciones y los 12 reversos:
 la altura del escenario cubrió la página, el cielo mantuvo `100% auto` y el
 borde inferior quedó oscuro. Se recargó para retirar las acciones de prueba.
+
+## Persistencia local con Electron
+
+Se sustituye el documento simulado en memoria por un catálogo JSON real. La
+aplicación arranca con `npm start` o `pnpm start`; Electron usa su ruta `userData`,
+que en Windows queda en `%APPDATA%\Peachyland\actions.json`. Esta carpeta está
+separada del proyecto y de la instalación. Si falta, se crea automáticamente con
+las nueve acciones iniciales. Si ya existe, se conserva y se lee, incluso tras
+reinstalar la aplicación. Un archivo existente malformado produce un error visible
+y nunca se reemplaza silenciosamente por los valores iniciales.
+
+El proceso principal posee el almacén y expone únicamente listar, agregar y
+eliminar a través del preload. Las vistas mantienen su contrato asíncrono; la
+ruleta y Cartas consultan el mismo catálogo. El almacén valida textos de hasta
+120 caracteres e identificadores únicos, serializa operaciones concurrentes y
+guarda mediante un archivo temporal antes de sustituir el JSON. La eliminación
+sigue siendo por identificador, por lo que dos acciones con el mismo texto son
+independientes. LiveServer ya no puede operar estas vistas porque no dispone del
+puente de Electron; se usa para desarrollo visual únicamente.
+
+Verificación: 37 pruebas automáticas aprobadas, incluidas creación inicial,
+persistencia al construir un segundo almacén, altas concurrentes, vaciado,
+validación y protección de JSON dañado. La aplicación abrió en Electron y Cartas
+mostró las nueve acciones. Se comprobó que el archivo real se creó en AppData
+con versión 1 y nueve acciones. No se modificaron los archivos originales de
+referencia (`background.png`, `perfil.png`, `cartas.html`, `cards.css`).
+
+## Retrato durante el reparto y control Eliminar
+
+El componente visual inserta `perfil.png` antes de que termine de cargar su CSS
+interno. El primer intento ocultó el elemento completo hasta la carga de CSS;
+fue incorrecto: la usuaria observó que las cartas dejaban de aparecer durante
+el reparto y que el destello continuaba. Se revirtió ese ocultamiento. La carta
+queda visible y únicamente se retrasa la asignación de `src` al retrato hasta
+que la hoja de estilos de la carta carga. Así el navegador no puede pintar la
+imagen sin sus reglas de tamaño y posición. La ruleta sigue esperando a que la
+imagen se decodifique antes de iniciar el reparto.
+
+Se investigó el botón Eliminar en una instancia aislada de Electron: agregar una
+acción temporal y eliminarla con un clic de puntero dejó el JSON temporal de
+nuevo en nueve acciones. El almacenamiento real se comprobó legible, con nueve
+identificadores únicos y sin alterar datos del usuario. El fallo reportado no
+se reprodujo en esa instancia. Para mejorar el uso y el diagnóstico, el botón
+tiene una zona de clic mayor y muestra «Eliminando…»; si la operación falla,
+el error se presenta junto a la carta además de junto al formulario. No se
+cambia la política de eliminación por ID ni el diseño de las cartas.
+
+Las 38 pruebas automáticas pasan, incluida una prueba nueva que comprueba que
+la carta no queda oculta y que el retrato recibe su `src` solo después del CSS.
+Queda pendiente la revisión visual final en la instalación del usuario: una
+nueva ejecución de Electron fue rechazada por el límite de uso del entorno.
+
+## Corrección comprobada en Electron — estilos durante el reparto
+
+La corrección anterior del retrato no resolvió el defecto. Se reprodujo en una
+instancia de Electron con acciones iniciales aisladas de los datos reales. Al
+repartir nueve cartas, el muestreo de cuadros detectó dos cartas visibles cuyo
+Shadow DOM tenía cero hojas de estilo aplicadas después de cambiar de contenedor.
+En esos cuadros, `perfil.png` medía 836 × 836 px y el encabezado del signo tenía
+posición `static`: esto explica tanto la imagen suelta como el nombre fuera del
+marco. La espera de `card.ready` y `image.decode()` había terminado antes de ese
+cambio de contenedor y no garantizaba que el `<link>` siguiera aplicado.
+
+`card.mjs` ahora convierte el CSS cargado en una hoja construida y la adopta en
+el Shadow DOM antes de resolver `ready` y asignar el retrato. Esa hoja permanece
+aplicada al mover el mismo elemento entre `.deck-top` y `.roulette-layer`.
+Se conservan el tamaño y el diseño de `card.css`, las trayectorias y la identidad
+de cada carta. No se modificaron Eliminar, el almacenamiento ni los originales.
+
+Verificación real: en Electron, dos rondas consecutivas con nueve acciones se
+muestrearon cuadro a cuadro durante el reparto; hubo cero cuadros con una carta
+visible sin estilos, retrato sobredimensionado o encabezado fuera de posición.
+Se inspeccionaron capturas de los vuelos, la mesa completa y la frontal ganadora:
+las cartas permanecieron sobre la mesa durante el reparto, el mazo se agotó y
+el resultado apareció después de la explosión. Las 38 pruebas automáticas
+pasaron, incluida la comprobación de adopción de CSS; por sí solas no prueban
+la apariencia. La revisión visual en la instalación del usuario sigue abierta.

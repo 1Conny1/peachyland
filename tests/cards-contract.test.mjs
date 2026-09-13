@@ -23,3 +23,54 @@ test('el catálogo no se puede mutar y valida entradas antes de tocar el DOM', (
     assert.throws(() => createCard({ signId: 'aries', width }), RangeError);
   }
 });
+
+test('espera al CSS para cargar el retrato sin ocultar la carta', async () => {
+  const originalDocument = globalThis.document;
+  const originalCSSStyleSheet = globalThis.CSSStyleSheet;
+  const images = [];
+  const shadow = { append() {}, adoptedStyleSheets: [] };
+  let stylesheet;
+  globalThis.CSSStyleSheet = class {
+    replaceSync(text) { this.text = text; }
+  };
+  globalThis.document = {
+    createElement(tag) {
+      const element = {
+        style: {},
+        append() {},
+        setAttribute() {},
+        attachShadow() { return shadow; },
+        querySelector() { return { textContent: '', clientWidth: 0 }; },
+        firstElementChild: { append() {} },
+      };
+      if (tag === 'img') images.push(element);
+      if (tag === 'link') stylesheet = {
+        ...element,
+        sheet: { cssRules: [{ cssText: '.profile img { width: 55px; }' }] },
+        remove() { this.removed = true; },
+      };
+      return tag === 'link' ? stylesheet : element;
+    },
+  };
+
+  try {
+    const card = createCard({ signId: 'aries' });
+    assert.equal(card.element.style.visibility, undefined);
+    assert.equal(images.length, 1);
+    assert.equal(images[0].src, undefined);
+
+    stylesheet.onload();
+    await card.ready;
+    assert.equal(shadow.adoptedStyleSheets.length, 1);
+    assert.match(shadow.adoptedStyleSheets[0].text, /profile img/);
+    assert.equal(stylesheet.removed, true);
+    assert.match(images[0].src, /perfil\.png$/);
+
+    card.showFront('Zing');
+    assert.equal(images.length, 2);
+    assert.match(images[1].src, /perfil\.png$/);
+  } finally {
+    globalThis.document = originalDocument;
+    globalThis.CSSStyleSheet = originalCSSStyleSheet;
+  }
+});

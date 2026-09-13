@@ -159,7 +159,11 @@ body[data-route='cartas'] main {
 .cards-gallery .gallery-action-feedback:empty { display: none; }
 .cards-gallery .gallery-remove-action {
   margin-top: 12px;
-  padding: 7px 16px;
+  min-width: 120px;
+  min-height: 44px;
+  padding: 9px 18px;
+  position: relative;
+  z-index: 1;
   border: 1px solid #b9858655;
   border-radius: 8px;
   background: #33172c;
@@ -176,6 +180,14 @@ body[data-route='cartas'] main {
   outline-offset: 4px;
 }
 .cards-gallery .gallery-remove-action:disabled { opacity: .5; cursor: wait; }
+.cards-gallery .gallery-remove-feedback {
+  max-width: 225px;
+  margin: 0;
+  color: #ffc2c2;
+  font: 600 13px/1.5 'Segoe UI', Arial, sans-serif;
+  text-align: center;
+}
+.cards-gallery .gallery-remove-feedback:empty { display: none; }
 .cards-gallery .gallery-action-form .gallery-action-feedback { color: #f4dcb6; }
 .cards-gallery .gallery-action-form .gallery-action-feedback[data-error] { color: #ffc2c2; }
 @media (max-width: 850px) {

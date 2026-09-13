@@ -1,0 +1,16 @@
+{
+  "name": "peachyland",
+  "version": "1.0.0",
+  "description": "Ruleta de acciones y cartas de Peachyland",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^44.3.0"
+  }
+}

@@ -1,35 +1,37 @@
-# Interfaz inicial
+# Aplicación de escritorio
 
-Entrada: `../../index.html`. Servir la raíz del proyecto mediante HTTP en desarrollo;
-los módulos ES pueden estar bloqueados al abrir el archivo con doble clic.
+Desde la raíz del proyecto, ejecutar `npm start` o `pnpm start` para abrir
+Peachyland con Electron. La interfaz ya no usa la simulación en memoria: abrir
+`index.html` con LiveServer o `file://` no permite cargar ni guardar acciones.
 
-- `main.mjs`: navegación por hash (`#/ruleta`, `#/cartas`), historial, ruta inicial
-  y conexiones. Inyecta `actionsProvider` a las vistas.
-- `../views/roulette-view.mjs`: conecta mesa, mazo y reparto con los datos.
-- `../views/cards-view.mjs`: galería de frentes dinámicos, doce reversos y formulario
-  para agregar acciones a la sesión.
-- `../data/actions.mock.mjs`: documento simulado `{ version: 1, actions: [{ id, text }] }`.
-- `../data/actions-provider.mjs`: contrato asíncrono `listActions()` y
-  `addAction(text)` y `removeAction(id)`, sin dependencias de DOM, archivos o Electron. Mantiene una
-  colección privada en memoria y devuelve copias. `addAction` valida texto de
-  hasta 120 caracteres y devuelve `{ id, text }` con un identificador único.
-  Las altas duran al navegar entre vistas; recargar restablece el documento inicial.
+En Windows, Electron guarda el catálogo en
+`%APPDATA%\Peachyland\actions.json` (la carpeta Roaming del perfil del usuario).
+Es independiente de la carpeta de instalación. Al arrancar, se crea la carpeta
+y el archivo si faltan; si el archivo ya existe, se lee sin reemplazarlo. Así,
+una instalación posterior recupera las acciones mientras esa carpeta siga allí.
+Si el JSON existente está dañado, la aplicación muestra un error y no lo
+sobrescribe con las acciones iniciales.
 
-Cada carta de acción ofrece un botón Eliminar. La eliminación usa su identificador
-(incluso cuando dos acciones tienen el mismo texto) y también dura solo la sesión.
-`removeAction(id)` devuelve la acción retirada o rechaza si el identificador no existe.
+## Módulos
 
-Para integrar Electron, inyectar un proveedor que implemente los tres métodos usando
-la API del preload. No es necesario modificar las vistas ni el módulo visual.
-Agregar una sección requiere registrar otra función `mount(container, services)`
-y su enlace lateral. Cada carga dispone de un contenedor propio para evitar que
-resultados tardíos interfieran al cambiar de ruta.
+- `../../electron/main.cjs`: ventana, ruta de datos de Electron y canales IPC.
+- `../../electron/actions-store.mjs`: lectura, validación y escritura del JSON.
+  Serializa las altas y bajas, y escribe primero en un archivo temporal.
+- `../../electron/default-actions.json`: nueve acciones iniciales, usadas solo
+  cuando no existe todavía `actions.json`.
+- `../../electron/preload.cjs`: expone únicamente los métodos de acciones a la
+  interfaz, sin darle acceso directo al sistema de archivos.
+- `../data/actions-provider.mjs`: adaptador asíncrono para `listActions()`,
+  `addAction(text)` y `removeAction(id)` mediante la API del preload.
+- `main.mjs`: navegación e inyección del proveedor compartido a las vistas.
+- `../views/cards-view.mjs`: galería, formulario de alta y botones de baja.
+- `../views/roulette-view.mjs`: mesa y reparto usando la misma lista actual.
 
-En esta galería se crean todas las frontales porque el propósito es inspeccionarlas.
-La ruleta futura conservará la construcción tardía de una sola frontal seleccionada.
-No hay asociación persistente acción/signo ni algoritmo de asignación en esta etapa.
+Agregar o eliminar una acción desde Cartas actualiza el archivo local. La ruleta
+lee el catálogo vigente al abrir su vista y mantiene la probabilidad `1/n` para
+cada acción. Los reversos zodiacales y el módulo visual de cartas no almacenan
+acciones ni conocen Electron.
 
-Verificado en navegador: agregar una acción crea su carta y actualiza el contador;
-la ruleta recibe el total nuevo con probabilidad 1/n. Al volver a Cartas se conserva
-la acción, y al recargar desaparece de la simulación. Los errores de validación
-conservan el texto del formulario para corregirlo.
+Ejecutar `npm test` o `pnpm test` para comprobar el almacén, el proveedor y la
+lógica existente. Las pruebas del almacén usan carpetas temporales, no modifican
+los datos reales del usuario.
