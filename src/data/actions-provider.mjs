@@ -14,5 +14,12 @@ export function createActionsProvider(bridge = globalThis.peachyland?.actions) {
     async listActions() { return actionsBridge().listActions(); },
     async addAction(text) { return actionsBridge().addAction(text); },
     async removeAction(id) { return actionsBridge().removeAction(id); },
+    async openDataFolder() {
+      const bridge = actionsBridge();
+      if (typeof bridge.openDataFolder !== 'function') {
+        throw new Error('No se pudo abrir la carpeta de datos desde Electron.');
+      }
+      return bridge.openDataFolder();
+    },
   });
 }

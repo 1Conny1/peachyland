@@ -22,7 +22,7 @@ sobrescribe con las acciones iniciales.
 - `../../electron/preload.cjs`: expone únicamente los métodos de acciones a la
   interfaz, sin darle acceso directo al sistema de archivos.
 - `../data/actions-provider.mjs`: adaptador asíncrono para `listActions()`,
-  `addAction(text)` y `removeAction(id)` mediante la API del preload.
+  `addAction(text)`, `removeAction(id)` y `openDataFolder()` mediante el preload.
 - `main.mjs`: navegación e inyección del proveedor compartido a las vistas.
 - `../views/cards-view.mjs`: galería, formulario de alta y botones de baja.
 - `../views/roulette-view.mjs`: mesa y reparto usando la misma lista actual.
@@ -31,6 +31,9 @@ Agregar o eliminar una acción desde Cartas actualiza el archivo local. La rulet
 lee el catálogo vigente al abrir su vista y mantiene la probabilidad `1/n` para
 cada acción. Los reversos zodiacales y el módulo visual de cartas no almacenan
 acciones ni conocen Electron.
+
+«Abrir carpeta de datos» en Cartas abre la carpeta `userData` de Electron que
+contiene `actions.json`; no expone una ruta editable a la interfaz.
 
 Ejecutar `npm test` o `pnpm test` para comprobar el almacén, el proveedor y la
 lógica existente. Las pruebas del almacén usan carpetas temporales, no modifican

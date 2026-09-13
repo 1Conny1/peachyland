@@ -587,3 +587,86 @@ las cartas permanecieron sobre la mesa durante el reparto, el mazo se agotó y
 el resultado apareció después de la explosión. Las 38 pruebas automáticas
 pasaron, incluida la comprobación de adopción de CSS; por sí solas no prueban
 la apariencia. La revisión visual en la instalación del usuario sigue abierta.
+
+## Contador y restablecimiento de la mesa — 2026-09-12
+
+El usuario confirmó que la corrección del destello y del texto inferior quedó
+como esperaba. Pidió simplificar la información superior izquierda a la cantidad
+de cartas y sustituir «Repartir de nuevo» por un control con icono arriba a la
+derecha. Ese control debe devolver la vista al mazo inicial sin iniciar el reparto.
+
+La cabecera de la ruleta muestra únicamente el conteo dinámico («1 carta»,
+«n cartas») junto a un icono de naipes. El botón de restablecer usa un icono de
+retorno con una carta, contorno dorado y fondo borgoña/ciruela; se sitúa separado
+del sol decorativo del fondo. El panel inferior conserva solamente el estado.
+
+Después del resultado, pulsar el icono retira las cartas de la mesa, prepara el
+mazo y espera. Se mantiene la regla existente de elegir el resultado antes de
+animar; pulsar el icono no inicia el vuelo ni revela otro resultado. Solo pulsar
+el mazo inicia la siguiente animación. El control permanece desactivado mientras
+se prepara o anima, y mientras el mazo está listo.
+
+Verificado en una instancia aislada de Electron con nueve acciones: se capturaron
+inicio, resultado y mesa restablecida; el mazo volvió y permaneció quieto tras
+700 ms; un nuevo clic en el mazo inició el segundo reparto. La revisión de
+capturas comprobó que el icono no se superpone al adorno y que el mazo restaurado
+no muestra un marco de foco adicional. Las 38 pruebas automáticas pasaron.
+No se usó ni modificó el archivo de acciones real. Estado: implementado y
+comprobado localmente; pendiente de aprobación visual del usuario.
+
+### Ajuste del icono de restablecimiento
+
+El usuario indicó que la flecha del icono se veía extraña y pidió dejar solo el
+mazo. Se sustituyó únicamente el SVG del botón por tres cartas superpuestas con
+un pequeño rombo en la frontal; su acción de restablecer, posición y etiqueta
+accesible permanecen iguales. Se verificó una captura del botón en Electron al
+tamaño real de la interfaz. Pendiente de aprobación visual del usuario.
+
+## Cartas — acceso a la carpeta de datos — 2026-09-12
+
+El usuario pidió retirar los dos textos inferiores del formulario «Nueva acción»
+y ofrecer un acceso a los datos guardados. Se quitaron el aviso permanente de
+longitud/guardado y los mensajes de éxito tras agregar o eliminar. Los errores
+de guardado, apertura o representación de una carta siguen apareciendo bajo el
+formulario cuando requieren atención. El límite de 120 caracteres y la lógica
+de altas y bajas permanecen intactos.
+
+Un botón secundario «Abrir carpeta de datos» bajo el campo llama a Electron para
+abrir exclusivamente su carpeta `userData`, donde se encuentra `actions.json`.
+La interfaz no recibe ni elige rutas arbitrarias. El botón tiene icono de carpeta
+y estilos acordes a la galería; un fallo al abrir muestra un error en el formulario.
+
+Verificado en Electron con datos aislados: la vista mostró el botón sin los
+textos anteriores, una alta de prueba aumentó el conteo de 9 a 10 sin mensaje
+de éxito y el clic invocó una sola llamada IPC. También se ejecutó el proceso
+principal con `userData` temporal y `shell.openPath` instrumentado: el destino
+solicitado coincidió exactamente con esa carpeta y su `actions.json` existía.
+No se abrió ni alteró el JSON real.
+Pasaron las 38 pruebas automáticas. Pendiente de revisión visual del usuario.
+
+## Ventana de Electron sin menú predeterminado — 2026-09-12
+
+El usuario pidió retirar la franja «File · Edit · View · Window» que aparece
+debajo de la barra de título. El proceso principal desactiva el menú
+predeterminado de Electron antes de crear la ventana. La barra de título y los
+controles de minimizar, maximizar y cerrar se conservan; no cambian las vistas.
+
+Verificado al abrir Electron con `userData` aislado: `isMenuBarVisible()` devolvió
+`false`, el título de la ventana siguió siendo «Ruleta · Peachyland» y el archivo
+de acciones de prueba se creó en la carpeta temporal. No se tocaron los datos
+reales. Pendiente de revisión visual del usuario.
+
+## Icono de la ventana con el retrato — 2026-09-12
+
+El usuario pidió sustituir el icono de Electron por `perfil.png`. La ventana
+ahora usa esa imagen original como icono mediante la opción `icon` de
+`BrowserWindow`; el PNG no se modificó. Electron admite PNG para el icono de
+ventana en Windows, por lo que no se requiere un `.ico` en el arranque actual.
+Un futuro ejecutable distribuible puede necesitar un `.ico` derivado para su
+propio icono y las distintas escalas de Windows.
+
+Verificado al abrir la aplicación en Electron con `userData` aislado:
+`nativeImage` cargó `perfil.png` sin quedar vacío (1254 × 1254 px), la ventana
+conservó el título «Ruleta · Peachyland» y el archivo de acciones se creó solo
+en la carpeta temporal. No se tocó el JSON real. Pendiente de revisión visual
+del usuario en su instalación.

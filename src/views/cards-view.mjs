@@ -26,11 +26,16 @@ export async function mountCards(container, { actionsProvider }) {
         <label for="new-action-text">Nueva acción</label>
         <div class="gallery-action-fields">
           <textarea id="new-action-text" name="action" rows="2" required
-            maxlength="${MAX_ACTION_LENGTH}" aria-describedby="action-help"
+            maxlength="${MAX_ACTION_LENGTH}"
             placeholder="Escribe lo que puede salir en la ruleta…"></textarea>
           <button type="submit" disabled>Agregar acción</button>
         </div>
-        <p id="action-help">Hasta ${MAX_ACTION_LENGTH} caracteres. Los cambios se guardan en este equipo.</p>
+        <div class="gallery-action-tools">
+          <button type="button" class="gallery-open-data">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M3 10h18"/></svg>
+            Abrir carpeta de datos
+          </button>
+        </div>
         <p class="gallery-action-feedback" role="status" aria-live="polite"></p>
       </form>
       <div class="cards-grid" data-fronts></div>
@@ -103,7 +108,8 @@ export async function mountCards(container, { actionsProvider }) {
 
   const form = container.querySelector('.gallery-action-form');
   const input = form.querySelector('textarea');
-  const button = form.querySelector('button');
+  const button = form.querySelector('button[type="submit"]');
+  const openDataButton = form.querySelector('.gallery-open-data');
   const feedback = form.querySelector('.gallery-action-feedback');
   let saving = false;
   function updateControls() {
@@ -134,7 +140,7 @@ export async function mountCards(container, { actionsProvider }) {
       figure.remove();
       if (!actions.length) fronts.textContent = 'Todavía no hay acciones cargadas.';
       updateSummary();
-      feedback.textContent = `«${action.text}» se eliminó de la colección y de la ruleta.`;
+      feedback.textContent = '';
     } catch (error) {
       if (!container.isConnected) return;
       feedback.dataset.error = 'true';
@@ -168,8 +174,10 @@ export async function mountCards(container, { actionsProvider }) {
       const fits = await mountCard(fronts, ZODIAC[0].id, addedAction);
       if (!container.isConnected) return;
       updateSummary();
-      feedback.textContent = `«${addedAction.text}» ya está disponible en la ruleta.` +
-        (fits ? '' : ' Su texto necesita revisión para caber en la carta.');
+      if (!fits) {
+        feedback.dataset.error = 'true';
+        feedback.textContent = 'La acción se agregó, pero su texto necesita revisión para caber en la carta.';
+      }
     } catch (error) {
       if (!container.isConnected) return;
       feedback.dataset.error = 'true';
@@ -184,6 +192,21 @@ export async function mountCards(container, { actionsProvider }) {
         button.textContent = 'Agregar acción';
         input.focus();
       }
+    }
+  });
+
+  openDataButton.addEventListener('click', async () => {
+    openDataButton.disabled = true;
+    feedback.textContent = '';
+    delete feedback.dataset.error;
+    try {
+      await actionsProvider.openDataFolder();
+    } catch (error) {
+      if (!container.isConnected) return;
+      feedback.dataset.error = 'true';
+      feedback.textContent = error.message;
+    } finally {
+      if (container.isConnected) openDataButton.disabled = false;
     }
   });
 }

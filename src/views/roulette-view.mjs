@@ -26,10 +26,15 @@ export async function mountRoulette(container, { actionsProvider }) {
   host.innerHTML = `
     <div class="roulette-viewport" aria-label="Mesa de la ruleta">
       <div class="roulette-table">
-        <header class="roulette-heading"><h1>Ruleta</h1><span data-probability></span></header>
+        <header class="roulette-heading">
+          <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="5" y="8" width="18" height="22" rx="2"/><rect x="9" y="4" width="18" height="22" rx="2"/><path d="M14 11h8M14 16h8M14 21h5"/></svg>
+          <h1 data-card-count>Cartas</h1>
+        </header>
+        <button class="roulette-reset" type="button" data-reset aria-label="Restablecer la mesa" title="Restablecer la mesa" disabled>
+          <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="19" y="5" width="22" height="29" rx="3"/><rect x="14" y="9" width="22" height="30" rx="3"/><rect class="deck-front" x="9" y="14" width="22" height="30" rx="3"/><path d="m20 23 4 5-4 5-4-5z"/></svg>
+        </button>
         <div class="roulette-layer"></div>
         <div class="roulette-controls">
-          <button type="button" data-repeat disabled>Repartir de nuevo</button>
           <p class="roulette-status" role="status">Cargando mesa…</p>
         </div>
         <button class="roulette-deck" type="button" aria-label="Repartir cartas" disabled hidden>
@@ -52,7 +57,7 @@ export async function mountRoulette(container, { actionsProvider }) {
 
   const status = host.querySelector('[role="status"]');
   const deck = host.querySelector('.roulette-deck');
-  const repeat = host.querySelector('[data-repeat]');
+  const reset = host.querySelector('[data-reset]');
   const layer = host.querySelector('.roulette-layer');
   const deckTop = deck.querySelector('.deck-top');
   const viewport = host.querySelector('.roulette-viewport');
@@ -96,9 +101,8 @@ export async function mountRoulette(container, { actionsProvider }) {
     ]);
     signal.throwIfAborted();
 
-    host.querySelector('[data-probability]').textContent = actions.length
-      ? `${actions.length} acciones · Probabilidad por acción: 1/${actions.length}`
-      : 'Sin acciones';
+    host.querySelector('[data-card-count]').textContent =
+      `${actions.length} ${actions.length === 1 ? 'carta' : 'cartas'}`;
     if (actions.length) {
       status.textContent = 'Preparando mazo…';
       preparedRound = await prepareRound(actions);
@@ -109,16 +113,14 @@ export async function mountRoulette(container, { actionsProvider }) {
     }
 
     async function startDeal() {
-      if (running || signal.aborted) return;
+      if (running || signal.aborted || !preparedRound) return;
       running = true;
       deck.disabled = true;
-      repeat.disabled = true;
+      reset.disabled = true;
 
       try {
-        status.textContent = preparedRound
-          ? 'Comenzando reparto…'
-          : 'Preparando un nuevo mazo…';
-        const round = preparedRound ?? await prepareRound(actions);
+        status.textContent = 'Comenzando reparto…';
+        const round = preparedRound;
         preparedRound = undefined;
 
         await dealCards({
@@ -181,14 +183,39 @@ export async function mountRoulette(container, { actionsProvider }) {
       } finally {
         running = false;
         if (!signal.aborted) {
-          repeat.disabled = false;
+          reset.disabled = false;
           deck.disabled = deck.hidden;
         }
       }
     }
 
+    async function resetTable() {
+      if (running || signal.aborted || reset.disabled) return;
+      running = true;
+      reset.disabled = true;
+      deck.disabled = true;
+      deck.hidden = true;
+      status.textContent = 'Preparando mazo…';
+
+      try {
+        // Prepara el resultado como al abrir la mesa; el reparto espera al mazo.
+        preparedRound = await prepareRound(actions);
+        signal.throwIfAborted();
+        deck.disabled = false;
+        status.textContent = 'Mazo listo para repartir.';
+      } catch (error) {
+        if (signal.aborted) return;
+        preparedRound = undefined;
+        deck.hidden = true;
+        status.textContent = `No se pudo restablecer la mesa: ${error.message}`;
+        reset.disabled = false;
+      } finally {
+        running = false;
+      }
+    }
+
     deck.addEventListener('click', startDeal, { signal });
-    repeat.addEventListener('click', startDeal, { signal });
+    reset.addEventListener('click', resetTable, { signal });
   } catch (error) {
     if (!signal.aborted) status.textContent = `No se pudo preparar la mesa: ${error.message}`;
   }

@@ -5,5 +5,6 @@ contextBridge.exposeInMainWorld('peachyland', {
     listActions: () => ipcRenderer.invoke('actions:list'),
     addAction: text => ipcRenderer.invoke('actions:add', text),
     removeAction: id => ipcRenderer.invoke('actions:remove', id),
+    openDataFolder: () => ipcRenderer.invoke('actions:open-folder'),
   }),
 });
