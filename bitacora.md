@@ -670,3 +670,13 @@ Verificado al abrir la aplicación en Electron con `userData` aislado:
 conservó el título «Ruleta · Peachyland» y el archivo de acciones se creó solo
 en la carpeta temporal. No se tocó el JSON real. Pendiente de revisión visual
 del usuario en su instalación.
+
+## Limpieza de carpetas vacías tras las verificaciones de Electron — 2026-09-12
+
+El usuario encontró carpetas con nombres Unicode extraños en la raíz del
+proyecto. Se revisaron en solo lectura: eran 19, creadas en los horarios de las
+pruebas locales de Electron, y cada una contenía exclusivamente los directorios
+vacíos `Microsoft/Spelling/neutral`. No había archivos, acciones ni código.
+Tras verificar cada ruta y contenido, se retiraron solo esas 19 carpetas.
+La raíz conserva `.git`, `demos`, `electron`, `node_modules`, `src` y `tests`.
+No se cambió código ni se tocaron los datos reales del usuario.
