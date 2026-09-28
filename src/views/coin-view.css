@@ -1,3 +1,5 @@
+@import url('../effects/table-fire.css');
+
 .coin-table {
   --coin-size: clamp(150px, 22vw, 230px);
   position: relative;
@@ -43,6 +45,7 @@
 
 .coin-scene {
   position: absolute;
+  z-index: 1;
   /* Centro de la rueda en background.png: 436 / 941 de su altura. */
   top: 46.3%;
   left: 50%;

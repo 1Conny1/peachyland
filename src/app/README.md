@@ -4,6 +4,24 @@ Desde la raíz del proyecto, ejecutar `npm start` o `pnpm start` para abrir
 Peachyland con Electron. La interfaz ya no usa la simulación en memoria: abrir
 `index.html` con LiveServer o `file://` no permite cargar ni guardar acciones.
 
+## Distribución para Windows
+
+Con Node.js y pnpm instalados, ejecutar `pnpm install` y después `pnpm dist:win`.
+La compilación x64 deja dos archivos en `dist/`:
+
+- `Peachyland-Setup-1.0.0-x64.exe`: instalador para Windows. Permite escoger
+  carpeta y crea accesos directos en Escritorio y menú Inicio.
+- `Peachyland-Portable-1.0.0-x64.exe`: se abre directamente, sin instalar.
+
+Para entregar la aplicación basta con compartir uno de esos `.exe`; no se
+necesita compartir `node_modules`, el código fuente ni `win-unpacked`. El
+ejecutable no está firmado con un certificado de editor, así que Windows puede
+mostrar una advertencia de SmartScreen al abrirlo.
+
+Los dos formatos usan la misma carpeta de datos del usuario que `pnpm start`.
+Desinstalar o reemplazar el programa no borra `actions.json`; antes de cambiar
+de equipo conviene guardar una copia desde «Abrir carpeta de datos».
+
 En Windows, Electron guarda el catálogo en
 `%APPDATA%\Peachyland\actions.json` (la carpeta Roaming del perfil del usuario).
 Es independiente de la carpeta de instalación. Al arrancar, se crea la carpeta

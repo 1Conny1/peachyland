@@ -1,4 +1,5 @@
 import { pickCoinSide } from '../coin/coin-toss.mjs';
+import { createTableFire } from '../effects/table-fire.mjs';
 
 const stylesheet = new URL('./coin-view.css', import.meta.url).href;
 
@@ -44,6 +45,7 @@ export function mountCoin(host) {
     </div>
   `;
   host.append(table);
+  const fire = createTableFire(table);
 
   const coin = table.querySelector('.coin-disc');
   const button = table.querySelector('.coin-launch');
@@ -60,10 +62,13 @@ export function mountCoin(host) {
     const finalTransform = `rotateY(${resultAngle}deg)`;
     const animations = [];
     button.disabled = true;
-    status.textContent = 'Lanzando…';
-    scene.classList.add('is-tossing');
+    status.textContent = 'Encendiendo el tablero…';
 
     try {
+      await fire.ignite();
+      if (!host.isConnected) return;
+      status.textContent = 'Lanzando…';
+      scene.classList.add('is-tossing');
       if (reducedMotion) {
         const transition = coin.animate([
           { opacity: 1, transform: `rotateY(${startAngle}deg)` },
@@ -96,6 +101,8 @@ export function mountCoin(host) {
       coin.style.transform = finalTransform;
       for (const animation of animations.splice(0)) animation.cancel();
       scene.classList.remove('is-tossing');
+      // Apaga el tablero en el contacto, antes del pequeño rebote.
+      fire.setActive(false);
 
       if (!reducedMotion) {
         scene.classList.add('is-impacting');
@@ -123,6 +130,7 @@ export function mountCoin(host) {
     } catch {
       if (host.isConnected) status.textContent = 'No se pudo completar el lanzamiento.';
     } finally {
+      fire.setActive(false);
       for (const animation of animations) animation.cancel();
       scene.classList.remove('is-tossing', 'is-impacting');
       if (host.isConnected) button.disabled = false;

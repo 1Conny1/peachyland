@@ -1,3 +1,4 @@
+import { createTableFire } from '../effects/table-fire.mjs';
 import { createCard } from '../cards/card.mjs';
 import { ZODIAC } from '../cards/zodiac.mjs';
 import { prepareDraw } from '../draw/prepare-draw.mjs';
@@ -45,6 +46,8 @@ export async function mountRoulette(container, { actionsProvider }) {
     </div>
   `;
   container.append(host);
+  const fire = createTableFire(host.querySelector('.roulette-table'));
+  signal.addEventListener('abort', () => fire.setActive(false), { once: true });
 
   const stylesheet = document.createElement('link');
   stylesheet.rel = 'stylesheet';
@@ -119,6 +122,8 @@ export async function mountRoulette(container, { actionsProvider }) {
       reset.disabled = true;
 
       try {
+        status.textContent = 'Encendiendo el tablero…';
+        await fire.ignite({ signal });
         status.textContent = 'Comenzando reparto…';
         const round = preparedRound;
         preparedRound = undefined;
@@ -181,6 +186,7 @@ export async function mountRoulette(container, { actionsProvider }) {
         deck.style.setProperty('--thickness', '24px');
         status.textContent = `No se pudo completar la secuencia: ${error.message}`;
       } finally {
+        fire.setActive(false);
         running = false;
         if (!signal.aborted) {
           reset.disabled = false;

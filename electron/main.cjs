@@ -2,6 +2,7 @@ const { app, BrowserWindow, dialog, ipcMain, Menu, shell } = require('electron')
 const path = require('node:path');
 
 app.setName('Peachyland');
+if (process.platform === 'win32') app.setAppUserModelId('com.peachyland.desktop');
 
 if (!app.requestSingleInstanceLock()) {
   app.quit();
